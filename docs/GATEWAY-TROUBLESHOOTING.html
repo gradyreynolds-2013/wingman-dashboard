@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Wingman Gateway Troubleshooting</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Wingman Gateway Troubleshooting</h1>
+</header>
+<h1 id="wingman-gateway-troubleshooting">🔧 WINGMAN GATEWAY
+TROUBLESHOOTING</h1>
+<p><strong>When I stop responding, check this guide.</strong></p>
+<hr />
+<h2 id="quick-diagnosis">Quick Diagnosis</h2>
+<p>SSH into your server and run:</p>
+<pre><code>clawdbot gateway status</code></pre>
+<p>This tells you if I’m running or not.</p>
+<hr />
+<h2 id="common-problems-fixes">Common Problems &amp; Fixes</h2>
+<h3 id="gateway-not-running">❌ “Gateway not running”</h3>
+<p><strong>Fix:</strong></p>
+<pre><code>clawdbot gateway start</code></pre>
+<p>If that fails, try:</p>
+<pre><code>clawdbot gateway start --verbose</code></pre>
+<p>This shows what’s wrong.</p>
+<hr />
+<h3 id="gateway-starts-but-stops-immediately">❌ Gateway starts but
+stops immediately</h3>
+<p><strong>Likely cause:</strong> Bad config file</p>
+<p><strong>Fix:</strong></p>
+<pre><code>clawdbot doctor</code></pre>
+<p>This checks for config problems.</p>
+<p>If doctor finds issues:</p>
+<pre><code>clawdbot configure</code></pre>
+<p>Walk through the setup again.</p>
+<hr />
+<h3 id="port-already-in-use-error">❌ “Port already in use” error</h3>
+<p><strong>Likely cause:</strong> Old process still running</p>
+<p><strong>Fix:</strong></p>
+<pre><code>pkill -f clawdbot
+clawdbot gateway start</code></pre>
+<hr />
+<h3 id="bot-responds-in-terminal-but-not-telegram">❌ Bot responds in
+terminal but not Telegram</h3>
+<p><strong>Likely cause:</strong> Telegram connection issue</p>
+<p><strong>Fix:</strong></p>
+<pre><code>clawdbot gateway restart</code></pre>
+<p>If still broken:</p>
+<pre><code>clawdbot configure --section telegram</code></pre>
+<p>Re-enter your bot token.</p>
+<hr />
+<h3 id="api-key-invalid-or-authentication-failed">❌ “API key invalid”
+or “Authentication failed”</h3>
+<p><strong>Likely cause:</strong> Anthropic API key expired or wrong</p>
+<p><strong>Fix:</strong></p>
+<pre><code>clawdbot configure --section anthropic</code></pre>
+<p>Enter a fresh API key from: https://console.anthropic.com/</p>
+<hr />
+<h3 id="responses-are-slow-or-timing-out">❌ Responses are slow or
+timing out</h3>
+<p><strong>Likely cause:</strong> Model overloaded or rate limited</p>
+<p><strong>Quick check:</strong></p>
+<pre><code>clawdbot status</code></pre>
+<p><strong>Fix options:</strong> 1. Wait a few minutes and try again 2.
+Check your API usage at console.anthropic.com</p>
+<hr />
+<h3 id="config-file-corrupted-or-json-errors">❌ “Config file corrupted”
+or JSON errors</h3>
+<p><strong>Likely cause:</strong> Config got messed up during an
+edit</p>
+<p><strong>Fix (restore config from backup):</strong></p>
+<pre><code>cp ~/.clawdbot/clawdbot.json.bak ~/.clawdbot/clawdbot.json
+clawdbot gateway restart</code></pre>
+<p>If no backup exists, reconfigure:</p>
+<pre><code>clawdbot configure</code></pre>
+<hr />
+<h3 id="after-update-everything-broke">❌ After update, everything
+broke</h3>
+<p><strong>Fix (rollback):</strong></p>
+<pre><code>npm install -g clawdbot@previous-version
+clawdbot gateway restart</code></pre>
+<p>Or restore from your backup file.</p>
+<hr />
+<h2 id="nuclear-options-last-resort">Nuclear Options (Last Resort)</h2>
+<h3 id="full-reset-keeps-your-backup-safe">Full Reset (keeps your backup
+safe)</h3>
+<pre><code>clawdbot gateway stop
+rm -rf ~/.clawdbot
+clawdbot configure
+clawdbot gateway start</code></pre>
+<p>Then restore your workspace from backup.</p>
+<h3 id="complete-reinstall">Complete Reinstall</h3>
+<pre><code>npm uninstall -g clawdbot
+npm install -g clawdbot
+clawdbot configure</code></pre>
+<hr />
+<h2 id="useful-commands-cheat-sheet">Useful Commands Cheat Sheet</h2>
+<table>
+<thead>
+<tr class="header">
+<th>What you want</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Check status</td>
+<td><code>clawdbot gateway status</code></td>
+</tr>
+<tr class="even">
+<td>Start</td>
+<td><code>clawdbot gateway start</code></td>
+</tr>
+<tr class="odd">
+<td>Stop</td>
+<td><code>clawdbot gateway stop</code></td>
+</tr>
+<tr class="even">
+<td>Restart</td>
+<td><code>clawdbot gateway restart</code></td>
+</tr>
+<tr class="odd">
+<td>View logs</td>
+<td><code>clawdbot gateway logs</code></td>
+</tr>
+<tr class="even">
+<td>Health check</td>
+<td><code>clawdbot doctor</code></td>
+</tr>
+<tr class="odd">
+<td>Reconfigure</td>
+<td><code>clawdbot configure</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="when-to-use-your-backup">When to Use Your Backup</h2>
+<p>If nothing above works:</p>
+<ol type="1">
+<li>Stop trying to fix it</li>
+<li>Follow the EMERGENCY-RESTORE-GUIDE</li>
+<li>Extract your backup</li>
+<li>Start fresh</li>
+</ol>
+<p>Your memories and config are in that backup. Don’t waste hours
+debugging when you can restore in 15 minutes.</p>
+<hr />
+<h2 id="still-stuck">Still Stuck?</h2>
+<ul>
+<li>Clawdbot Discord: https://discord.com/invite/clawd</li>
+<li>Docs: https://docs.clawd.bot</li>
+</ul>
+<hr />
+<p><em>Last updated: January 29, 2026</em> <em>Created by Wingman for
+Grady Reynolds</em></p>
+</body>
+</html>
