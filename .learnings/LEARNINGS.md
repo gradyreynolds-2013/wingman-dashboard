@@ -43,3 +43,27 @@ Docker build fails on Apple Silicon due to platform mismatch
 
 ---
 
+## [LRN-20260129-001] correction
+
+**Logged**: 2026-01-29T14:15:00Z
+**Priority**: critical
+**Status**: resolved
+**Area**: config
+
+### Summary
+Model name changes require full version identifiers, not short names
+
+### Details
+Grady's previous bot was asked to "switch to Sonnet" and used `anthropic/claude-sonnet-4` instead of the correct `anthropic/claude-sonnet-4-20250514`. This crashed the gateway with "Unknown model" error and locked him out completely, losing the bot.
+
+### Correct Behavior
+Before changing any model in config:
+1. Run `clawdbot models list` to verify exact model name
+2. Use the full identifier with version date
+3. Never guess or use shorthand names in config
+
+### Resolution
+- Created MODEL-CHANGES-GUIDE.md for Grady
+- Will always verify model names before applying config changes
+
+---
