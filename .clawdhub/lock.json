@@ -44,6 +44,14 @@
     "search-x": {
       "version": "1.0.0",
       "installedAt": 1769694974490
+    },
+    "openai-whisper": {
+      "version": "1.0.0",
+      "installedAt": 1769697081674
+    },
+    "model-router": {
+      "version": "1.1.0",
+      "installedAt": 1769697450000
     }
   }
 }
