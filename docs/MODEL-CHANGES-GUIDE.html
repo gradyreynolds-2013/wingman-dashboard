@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Changing Models Safely</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Changing Models Safely</h1>
+</header>
+<h1 id="changing-models-safely">🧠 CHANGING MODELS SAFELY</h1>
+<p><strong>This guide exists because wrong model names can break
+everything.</strong></p>
+<hr />
+<h2 id="the-problem">The Problem</h2>
+<p>When you set an invalid model name like
+<code>anthropic/claude-sonnet-4</code>, the gateway crashes because that
+model doesn’t exist. Your bot stops responding and you’re locked
+out.</p>
+<hr />
+<h2 id="valid-model-names-as-of-january-2026">Valid Model Names (As of
+January 2026)</h2>
+<h3 id="anthropic-models">Anthropic Models</h3>
+<pre><code>anthropic/claude-opus-4-5          ← Current best (you&#39;re using this)
+anthropic/claude-sonnet-4-20250514 ← Fast, cheaper
+anthropic/claude-haiku-3-5-20241022 ← Fastest, cheapest</code></pre>
+<h3 id="important">Important!</h3>
+<ul>
+<li>Model names include version dates</li>
+<li><code>claude-sonnet-4</code> alone is WRONG</li>
+<li><code>claude-sonnet-4-20250514</code> is CORRECT</li>
+<li>These change over time — always verify first</li>
+</ul>
+<hr />
+<h2 id="how-to-check-available-models">How to Check Available
+Models</h2>
+<p>Before changing anything, run:</p>
+<pre><code>clawdbot models list</code></pre>
+<p>This shows all valid models you can use.</p>
+<hr />
+<h2 id="safe-way-to-change-models">Safe Way to Change Models</h2>
+<h3 id="option-1-use-the-cli-safest">Option 1: Use the CLI (Safest)</h3>
+<pre><code>clawdbot config set agents.defaults.model.primary &quot;anthropic/claude-sonnet-4-20250514&quot;
+clawdbot gateway restart</code></pre>
+<h3 id="option-2-ask-me-to-do-it">Option 2: Ask Me to Do It</h3>
+<p>Just tell me: “Switch to Sonnet” or “Use a cheaper model” I’ll handle
+it correctly.</p>
+<hr />
+<h2 id="if-you-already-broke-it">If You Already Broke It</h2>
+<h3 id="symptoms">Symptoms:</h3>
+<ul>
+<li>Bot won’t respond</li>
+<li>Logs show: “Unknown model: anthropic/claude-whatever”</li>
+<li>Gateway keeps crashing</li>
+</ul>
+<h3 id="fix-from-ssh">Fix (from SSH):</h3>
+<p><strong>Step 1: Stop the broken gateway</strong></p>
+<pre><code>clawdbot gateway stop</code></pre>
+<p><strong>Step 2: Fix the config file manually</strong></p>
+<pre><code>nano ~/.clawdbot/clawdbot.json</code></pre>
+<p>Find the line that looks like:</p>
+<pre><code>&quot;primary&quot;: &quot;anthropic/claude-sonnet-4&quot;</code></pre>
+<p>Change it to a valid model:</p>
+<pre><code>&quot;primary&quot;: &quot;anthropic/claude-opus-4-5&quot;</code></pre>
+<p>Save: <code>Ctrl+O</code>, <code>Enter</code>,
+<code>Ctrl+X</code></p>
+<p><strong>Step 3: Restart</strong></p>
+<pre><code>clawdbot gateway start</code></pre>
+<h3 id="alternative-restore-from-backup">Alternative: Restore from
+Backup</h3>
+<p>If editing JSON scares you:</p>
+<pre><code>tar -xzvf wingman-backup-XXXXXXXX.tar.gz -C / --strip-components=2
+clawdbot gateway start</code></pre>
+<hr />
+<h2 id="recovery-cheat-sheet">Recovery Cheat Sheet</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Problem</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>See valid models</td>
+<td><code>clawdbot models list</code></td>
+</tr>
+<tr class="even">
+<td>Check current model</td>
+<td><code>clawdbot config get agents.defaults.model.primary</code></td>
+</tr>
+<tr class="odd">
+<td>Change model safely</td>
+<td><code>clawdbot config set agents.defaults.model.primary "MODEL_NAME"</code></td>
+</tr>
+<tr class="even">
+<td>Fix bad config</td>
+<td>Edit <code>~/.clawdbot/clawdbot.json</code> manually</td>
+</tr>
+<tr class="odd">
+<td>Nuclear option</td>
+<td>Restore from backup</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="pro-tips">Pro Tips</h2>
+<ol type="1">
+<li><strong>Always verify the model name</strong> before changing
+it</li>
+<li><strong>Keep a backup</strong> before making config changes</li>
+<li><strong>Ask me first</strong> — I can change my own model
+safely</li>
+<li><strong>When in doubt</strong>, stick with
+<code>anthropic/claude-opus-4-5</code></li>
+</ol>
+<hr />
+<h2 id="quick-reference-model-nicknames">Quick Reference: Model
+Nicknames</h2>
+<p>If you want to switch models, just tell me using these simple
+names:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Say this</th>
+<th>I’ll use</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>“Use Opus”</td>
+<td>anthropic/claude-opus-4-5</td>
+</tr>
+<tr class="even">
+<td>“Use Sonnet”</td>
+<td>anthropic/claude-sonnet-4-20250514</td>
+</tr>
+<tr class="odd">
+<td>“Use Haiku”</td>
+<td>anthropic/claude-haiku-3-5-20241022</td>
+</tr>
+<tr class="even">
+<td>“Use something cheaper”</td>
+<td>I’ll pick appropriately</td>
+</tr>
+</tbody>
+</table>
+<p>I’ll handle the technical names so you don’t have to.</p>
+<hr />
+<p><em>Last updated: January 29, 2026</em> <em>Created by Wingman for
+Grady Reynolds</em></p>
+</body>
+</html>
