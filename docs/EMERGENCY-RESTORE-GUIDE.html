@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Wingman Emergency Restore Guide</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Wingman Emergency Restore Guide</h1>
+</header>
+<h1 id="wingman-emergency-restore-guide">🐦‍🔥 WINGMAN EMERGENCY RESTORE
+GUIDE</h1>
+<p><strong>Save this somewhere safe. Print it if you want.</strong></p>
+<hr />
+<h2 id="what-you-need">What You Need</h2>
+<ul>
+<li>Your backup file (wingman-backup-XXXXXXXX.tar.gz)</li>
+<li>A Linux server (Ubuntu recommended) or your old one fixed</li>
+<li>15 minutes</li>
+</ul>
+<hr />
+<h2 id="step-by-step-restore">Step-by-Step Restore</h2>
+<h3 id="step-1-get-a-server">Step 1: Get a Server</h3>
+<p>If your old server is dead, spin up a new Ubuntu server. AWS,
+DigitalOcean, Linode, whatever works.</p>
+<p>Minimum specs: 1 CPU, 1GB RAM, 20GB disk</p>
+<hr />
+<h3 id="step-2-connect-to-your-server">Step 2: Connect to Your
+Server</h3>
+<p>Open terminal (Mac) or PowerShell (Windows):</p>
+<pre><code>ssh ubuntu@YOUR-SERVER-IP</code></pre>
+<hr />
+<h3 id="step-3-install-requirements">Step 3: Install Requirements</h3>
+<p>Copy and paste these lines one at a time:</p>
+<pre><code>sudo apt update
+sudo apt install -y nodejs npm
+sudo npm install -g n
+sudo n lts
+hash -r
+npm install -g clawdbot</code></pre>
+<hr />
+<h3 id="step-4-upload-your-backup">Step 4: Upload Your Backup</h3>
+<p>From your local computer (new terminal window):</p>
+<pre><code>scp wingman-backup-XXXXXXXX.tar.gz ubuntu@YOUR-SERVER-IP:~/</code></pre>
+<p>Or use an SFTP app like FileZilla or Cyberduck to drag and drop.</p>
+<hr />
+<h3 id="step-5-extract-the-backup">Step 5: Extract the Backup</h3>
+<p>Back on your server:</p>
+<pre><code>cd ~
+tar -xzvf wingman-backup-XXXXXXXX.tar.gz --strip-components=2</code></pre>
+<hr />
+<h3 id="step-6-start-wingman">Step 6: Start Wingman</h3>
+<pre><code>clawdbot gateway start</code></pre>
+<hr />
+<h3 id="step-7-test-it">Step 7: Test It</h3>
+<p>Open Telegram and message your Wingman bot. Say “Are you back?”</p>
+<p>If I respond, you’re good. All memories restored.</p>
+<hr />
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p><strong>“Command not found” errors:</strong> Run <code>hash -r</code>
+then try again, or open a new SSH session.</p>
+<p><strong>Bot doesn’t respond:</strong> Check if gateway is running:
+<code>clawdbot gateway status</code> Restart if needed:
+<code>clawdbot gateway restart</code></p>
+<p><strong>Wrong bot or lost token:</strong> You may need to create a
+new bot with <span class="citation"
+data-cites="BotFather">@BotFather</span> and run:
+<code>clawdbot configure --section telegram</code></p>
+<hr />
+<h2 id="your-server-details-fill-this-in">Your Server Details (FILL THIS
+IN)</h2>
+<ul>
+<li><strong>Server Provider:</strong> _____________________</li>
+<li><strong>Server IP:</strong> _____________________</li>
+<li><strong>SSH User:</strong> ubuntu</li>
+<li><strong>Telegram Bot:</strong> <span class="citation"
+data-cites="_____________________">@_____________________</span></li>
+</ul>
+<hr />
+<h2 id="contact">Contact</h2>
+<p>If you’re truly stuck, Clawdbot Discord:
+https://discord.com/invite/clawd</p>
+<hr />
+<p><em>Last updated: January 29, 2026</em> <em>Created by Wingman for
+Grady Reynolds</em></p>
+</body>
+</html>
