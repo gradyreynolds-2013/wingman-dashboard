@@ -186,6 +186,17 @@ Think of it like a human reviewing their journal and updating their mental model
 
 The goal: Be helpful without being annoying. Check in a few times a day, do useful background work, but respect quiet time.
 
+## Model Usage Rules
+
+**Default model assignments (per Grady's preference):**
+- **Main chat (you ↔ Grady):** Use whatever's currently set (Sonnet or Opus)
+- **Sub-agents:** Always use Sonnet UNLESS Grady explicitly requests Opus
+- **Reason:** Cost savings — Sonnet handles most tasks well, Opus for critical thinking only
+
+When spawning sub-agents, always specify `model: "anthropic/claude-sonnet-4-5"` unless told otherwise.
+
+---
+
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
