@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "skills": {
+    "byterover": {
+      "version": "1.2.2",
+      "installedAt": 1769693500827
+    },
+    "memory-hygiene": {
+      "version": "1.0.0",
+      "installedAt": 1769693720644
+    },
+    "memory-setup": {
+      "version": "1.0.0",
+      "installedAt": 1769693639780
+    },
+    "supermemory": {
+      "version": "1.0.0",
+      "installedAt": 1769693550902
+    },
+    "lancedb-memory": {
+      "version": "1.0.0",
+      "installedAt": 1769693640969
+    },
+    "self-improving-agent": {
+      "version": "1.0.2",
+      "installedAt": 1769693914383
+    },
+    "humanizer": {
+      "version": "1.0.0",
+      "installedAt": 1769694324694
+    },
+    "deep-research": {
+      "version": "1.0.1",
+      "installedAt": 1769694390827
+    },
+    "clawddocs": {
+      "version": "1.2.2",
+      "installedAt": 1769694406604
+    },
+    "proactive-agent": {
+      "version": "1.2.4",
+      "installedAt": 1769694524336
+    },
+    "search-x": {
+      "version": "1.0.0",
+      "installedAt": 1769694974490
+    }
+  }
+}
