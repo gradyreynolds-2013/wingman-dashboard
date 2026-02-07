@@ -1,29 +1,9 @@
 {
   "version": 1,
   "skills": {
-    "byterover": {
-      "version": "1.2.2",
-      "installedAt": 1769693500827
-    },
-    "memory-hygiene": {
-      "version": "1.0.0",
-      "installedAt": 1769693720644
-    },
-    "memory-setup": {
-      "version": "1.0.0",
-      "installedAt": 1769693639780
-    },
-    "supermemory": {
-      "version": "1.0.0",
-      "installedAt": 1769693550902
-    },
-    "lancedb-memory": {
-      "version": "1.0.0",
-      "installedAt": 1769693640969
-    },
     "self-improving-agent": {
-      "version": "1.0.2",
-      "installedAt": 1769693914383
+      "version": "1.0.4",
+      "installedAt": 1769940105698
     },
     "humanizer": {
       "version": "1.0.0",
@@ -38,8 +18,8 @@
       "installedAt": 1769694406604
     },
     "proactive-agent": {
-      "version": "1.2.4",
-      "installedAt": 1769694524336
+      "version": "3.0.0",
+      "installedAt": 1770199313439
     },
     "search-x": {
       "version": "1.0.0",
@@ -52,6 +32,54 @@
     "model-router": {
       "version": "1.1.0",
       "installedAt": 1769697450000
+    },
+    "auto-updater": {
+      "version": "1.0.0",
+      "installedAt": 1769701516077
+    },
+    "marketing-mode": {
+      "version": "1.0.0",
+      "installedAt": 1769705414003
+    },
+    "excel": {
+      "version": "1.0.0",
+      "installedAt": 1769708008448
+    },
+    "pymupdf-pdf-parser-clawdbot-skill": {
+      "version": "1.0.0",
+      "installedAt": 1769729735669
+    },
+    "adhd-body-doubling": {
+      "version": "0.1.0",
+      "installedAt": 1769737253415
+    },
+    "gog": {
+      "version": "1.0.0",
+      "installedAt": 1769744802080
+    },
+    "superdesign": {
+      "version": "1.0.0",
+      "installedAt": 1769821958014
+    },
+    "faster-whisper": {
+      "version": "1.0.4",
+      "installedAt": 1769822370070
+    },
+    "openai-tts": {
+      "version": "1.0.0",
+      "installedAt": 1769822696532
+    },
+    "mac-tts": {
+      "version": "1.0.0",
+      "installedAt": 1769822976096
+    },
+    "telegram-create-bot": {
+      "version": "1.0.0",
+      "installedAt": 1769823421926
+    },
+    "github": {
+      "version": "1.0.0",
+      "installedAt": 1769876604898
     }
   }
 }
