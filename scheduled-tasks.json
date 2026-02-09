@@ -1,0 +1,73 @@
+{
+  "scheduledTasks": [
+    {
+      "id": 1,
+      "title": "Daily Backup",
+      "description": "System backup script runs every night",
+      "schedule": "0 3 * * * (3:00 AM daily)",
+      "nextRun": "2026-02-10T03:00:00Z",
+      "status": "active",
+      "type": "system"
+    },
+    {
+      "id": 2,
+      "title": "Create grady.ai@gmail.com Account",
+      "description": "Set up new email account for business communications",
+      "schedule": "Due Feb 8 EOD",
+      "dueDate": "2026-02-08T23:59:59Z",
+      "status": "overdue",
+      "priority": "high",
+      "type": "task"
+    },
+    {
+      "id": 3,
+      "title": "Set up CREXI Automation",
+      "description": "Configure property search filters and deal alerts on CREXI",
+      "schedule": "Due Feb 10",
+      "dueDate": "2026-02-10T23:59:59Z",
+      "status": "pending",
+      "priority": "medium",
+      "type": "task"
+    },
+    {
+      "id": 4,
+      "title": "Deploy Dashboard to Systemd",
+      "description": "Move keep-alive script to systemd for persistent 24/7 uptime",
+      "schedule": "Due Feb 10",
+      "dueDate": "2026-02-10T23:59:59Z",
+      "status": "pending",
+      "priority": "high",
+      "type": "infrastructure"
+    },
+    {
+      "id": 5,
+      "title": "Research OZ Property Targets",
+      "description": "Find 2-3 apartment complexes in qualified zones matching fund criteria",
+      "schedule": "Due Feb 15",
+      "dueDate": "2026-02-15T23:59:59Z",
+      "status": "in-progress",
+      "priority": "high",
+      "type": "task"
+    },
+    {
+      "id": 6,
+      "title": "Finalize OZ Fund Website",
+      "description": "Complete positioning, copy, design, and deploy live",
+      "schedule": "Due Feb 20",
+      "dueDate": "2026-02-20T23:59:59Z",
+      "status": "planning",
+      "priority": "high",
+      "type": "task"
+    },
+    {
+      "id": 7,
+      "title": "Create Investor Outreach List",
+      "description": "Identify potential LPs for QOZ fund",
+      "schedule": "Due Feb 25",
+      "dueDate": "2026-02-25T23:59:59Z",
+      "status": "planning",
+      "priority": "medium",
+      "type": "task"
+    }
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "wells": [
+    {
+      "well": "204H",
+      "status": "complete",
+      "documents": [
+        {
+          "type": "Well Plan",
+          "filename": "Date 14 State Com #204H Planning Report.pdf",
+          "size": "2.4 MB",
+          "date": "2026-01-25"
+        },
+        {
+          "type": "Well Bore Diagram",
+          "filename": "Date 14 State Com #204H - Well Bore Diagram.pdf",
+          "size": "1.8 MB",
+          "date": "2026-01-25"
+        },
+        {
+          "type": "BHA 1 - Surface",
+          "filename": "BHA 1_Surface_PHX900053PTS_Date 14 SC 204H.pdf",
+          "size": "3.2 MB",
+          "date": "2026-01-26"
+        },
+        {
+          "type": "BHA 1 - Surface (MPR)",
+          "filename": "MPR_BHA 1 Surface_PHX-900053-PTS_Date 14 SC #204H.pdf",
+          "size": "2.8 MB",
+          "date": "2026-01-26"
+        },
+        {
+          "type": "BHA 2 - Intermediate 1",
+          "filename": "BHA 2_Intermediate 1_PHX900027_Date 14 SC 204H.pdf",
+          "size": "2.9 MB",
+          "date": "2026-01-27"
+        },
+        {
+          "type": "BHA 2 - Intermediate 1 (MPR)",
+          "filename": "MPR_BHA 2_Intermediate 1_PHX900027_Date 14 SC #204H.pdf",
+          "size": "2.5 MB",
+          "date": "2026-01-27"
+        },
+        {
+          "type": "BHA 3 - Intermediate 2",
+          "filename": "BHA 3_Intermediate 2_838D1007LE_Date 14 SC 204H.pdf",
+          "size": "2.1 MB",
+          "date": "2026-01-28"
+        }
+      ]
+    },
+    {
+      "well": "205H",
+      "status": "complete",
+      "documents": [
+        {
+          "type": "Well Plan",
+          "filename": "Date 14 State Com #205H Planning Report.pdf",
+          "size": "2.3 MB",
+          "date": "2026-01-25"
+        },
+        {
+          "type": "Well Bore Diagram",
+          "filename": "Date 14 State Com #205H - Well Bore Diagram.pdf",
+          "size": "1.9 MB",
+          "date": "2026-01-25"
+        },
+        {
+          "type": "BHA 1 - Surface",
+          "filename": "BHA #1 Surface_PHX-900053-PTS_Date 14 SC #205H.pdf",
+          "size": "3.1 MB",
+          "date": "2026-01-26"
+        },
+        {
+          "type": "BHA 1 - Surface (MPR)",
+          "filename": "MPR_BHA #1 Surface_PHX-900053-PTS_Date 14 SC #205H.pdf",
+          "size": "2.7 MB",
+          "date": "2026-01-26"
+        },
+        {
+          "type": "BHA 2 - Intermediate",
+          "filename": "BHA 2_12.25 Intermediate_PHX900027_Date 14 SC 205H.pdf",
+          "size": "3.0 MB",
+          "date": "2026-01-27"
+        },
+        {
+          "type": "BHA 2 - Intermediate (MPR)",
+          "filename": "MPR_BHA 2_12.25 Intermediate_PHX900027_Date 14 SC 205H.pdf",
+          "size": "2.6 MB",
+          "date": "2026-01-27"
+        },
+        {
+          "type": "BHA 3 - Intermediate 2",
+          "filename": "BHA 3_Intermediate 2_838D1064LE_Date 14 SC 205H.pdf",
+          "size": "2.2 MB",
+          "date": "2026-01-28"
+        }
+      ]
+    },
+    {
+      "well": "504H",
+      "status": "complete",
+      "documents": [
+        {
+          "type": "Well Plan",
+          "filename": "Date 14 State Com #504H Planning Report.pdf",
+          "size": "2.4 MB",
+          "date": "2026-01-25"
+        },
+        {
+          "type": "Well Bore Diagram",
+          "filename": "Date 14 State Com #504H - Well Bore Diagram.pdf",
+          "size": "1.8 MB",
+          "date": "2026-01-25"
+        },
+        {
+          "type": "BHA 1 - Surface",
+          "filename": "BHA 1_Surface_PHX900027PTS_Date 14 SC 504H.pdf",
+          "size": "3.2 MB",
+          "date": "2026-01-26"
+        },
+        {
+          "type": "BHA 1 - Surface (MPR)",
+          "filename": "MPR_BHA 1_Surface_PHX900027PTS_Date 14 SC 504H.pdf",
+          "size": "2.8 MB",
+          "date": "2026-01-26"
+        },
+        {
+          "type": "BHA 2 - Intermediate 1",
+          "filename": "BHA 2_Intermediate 1_838D1064LE_Date 14 SC 504H.pdf",
+          "size": "2.9 MB",
+          "date": "2026-01-27"
+        },
+        {
+          "type": "BHA 2 - Intermediate 1 (MPR)",
+          "filename": "MPR_BHA 2_Intermediate 1_838D1064LE_Date 14 SC 504H.pdf",
+          "size": "2.5 MB",
+          "date": "2026-01-27"
+        },
+        {
+          "type": "BHA 3 - Intermediate 2",
+          "filename": "BHA 3_Intermediate 2_83D1007LE_Date 14 SC 504H.pdf",
+          "size": "2.1 MB",
+          "date": "2026-01-28"
+        },
+        {
+          "type": "BHA 3 - Intermediate 2 (MPR)",
+          "filename": "MPR_BHA 3_Intermediate 2_83D1007LE_Date 14 SC 504H.pdf",
+          "size": "2.0 MB",
+          "date": "2026-01-28"
+        }
+      ]
+    },
+    {
+      "well": "801H",
+      "status": "complete",
+      "documents": [
+        {
+          "type": "Well Plan",
+          "filename": "well-plan.pdf",
+          "size": "2.5 MB",
+          "date": "2026-01-25"
+        },
+        {
+          "type": "Well Bore Diagram",
+          "filename": "wellbore-diagram.pdf",
+          "size": "1.9 MB",
+          "date": "2026-01-25"
+        },
+        {
+          "type": "BHA 1 - Surface",
+          "filename": "BHA 2 Surface AEP9028 Date 14 SC #801H.pdf",
+          "size": "3.0 MB",
+          "date": "2026-01-26"
+        },
+        {
+          "type": "BHA 1 - Surface (MPR)",
+          "filename": "MPR_BHA 2 Surface AEP9028 Date 14 SC #801H.pdf",
+          "size": "2.6 MB",
+          "date": "2026-01-26"
+        },
+        {
+          "type": "BHA 2 - Surface",
+          "filename": "BHA 2 Surface AEP9028 Date 14 SC #801H.pdf",
+          "size": "3.0 MB",
+          "date": "2026-01-27"
+        },
+        {
+          "type": "BHA 2 - Surface (MPR)",
+          "filename": "MPR_BHA 2 Surface AEP9028 Date 14 SC #801H.pdf",
+          "size": "2.6 MB",
+          "date": "2026-01-27"
+        },
+        {
+          "type": "BHA 3 - Intermediate 1",
+          "filename": "BHA 3_Intermediate 1_AEP9004_Date 14 SC 801H.pdf",
+          "size": "2.8 MB",
+          "date": "2026-01-27"
+        },
+        {
+          "type": "BHA 3 - Intermediate (MPR)",
+          "filename": "MPR_BHA 3_Intermediate_AEP9004_Date 14 SC 801H.pdf",
+          "size": "2.4 MB",
+          "date": "2026-01-27"
+        },
+        {
+          "type": "BHA 4 - Intermediate 2",
+          "filename": "BHA 4_Intermediate 2_83D1007LE_Date 14 SC 801H.pdf",
+          "size": "2.1 MB",
+          "date": "2026-01-28"
+        }
+      ]
+    },
+    {
+      "well": "901H",
+      "status": "complete",
+      "documents": [
+        {
+          "type": "Well Plan",
+          "filename": "Date 14 State Com #901H Planning Report.pdf",
+          "size": "2.3 MB",
+          "date": "2026-01-25"
+        },
+        {
+          "type": "Well Bore Diagram",
+          "filename": "Date 14 State Com #901H - Well Bore Diagram.pdf",
+          "size": "1.9 MB",
+          "date": "2026-01-25"
+        },
+        {
+          "type": "BHA 1 - Surface",
+          "filename": "BHA #1 Surface_Mpact 1000-1002_Date 14 SC #901H.pdf",
+          "size": "3.1 MB",
+          "date": "2026-01-26"
+        },
+        {
+          "type": "BHA 1 - Surface (MPR)",
+          "filename": "MPR_BHA 1_Surface_Mpact 1000-1002_Date 14 SC 901H.pdf",
+          "size": "2.7 MB",
+          "date": "2026-01-26"
+        },
+        {
+          "type": "BHA 2 - Surface",
+          "filename": "BHA 2_Surface_Mpact 1000-1002_Date 14 SC 901H.pdf",
+          "size": "3.1 MB",
+          "date": "2026-01-27"
+        },
+        {
+          "type": "BHA 2 - Surface (MPR)",
+          "filename": "MPR_BHA 2_Surface_Mpact 1000-1002_Date 14 SC 901H.pdf",
+          "size": "2.7 MB",
+          "date": "2026-01-27"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "totalWells": 5,
+    "documentsLoaded": 36,
+    "completionRate": "100%"
+  }
+}

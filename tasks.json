@@ -1,0 +1,60 @@
+{
+  "tasks": [
+    {
+      "id": 7,
+      "title": "Build Wingman Activity Dashboard",
+      "description": "✅ COMPLETE - HTML/CSS/JS dashboard with tasks, links, well files, activity timeline. Self-hosted on EC2. Keep-alive script ready.",
+      "priority": "high",
+      "dueDate": "2026-02-08",
+      "status": "complete"
+    },
+    {
+      "id": 3,
+      "title": "Set up CREXI automation",
+      "description": "Create login, set search filters, enable deal alerts",
+      "priority": "medium",
+      "dueDate": "2026-02-10",
+      "status": "planning"
+    },
+    {
+      "id": 5,
+      "title": "Review rig well files",
+      "description": "Check 801H BHA reports for optimization notes",
+      "priority": "low",
+      "dueDate": "2026-02-12",
+      "status": "pending"
+    },
+    {
+      "id": 1,
+      "title": "Research first OZ property target",
+      "description": "Find 2-3 apartment complexes in qualified zones matching fund criteria",
+      "priority": "high",
+      "dueDate": "2026-02-15",
+      "status": "in-progress"
+    },
+    {
+      "id": 2,
+      "title": "Finalize OZ fund website",
+      "description": "Complete positioning, copy, and deploy live",
+      "priority": "high",
+      "dueDate": "2026-02-20",
+      "status": "planning"
+    },
+    {
+      "id": 4,
+      "title": "Create investor outreach list",
+      "description": "Identify potential LPs for QOZ fund",
+      "priority": "medium",
+      "dueDate": "2026-02-25",
+      "status": "planning"
+    },
+    {
+      "id": 6,
+      "title": "Set up Google Workspace integration",
+      "description": "Create service account and integrate with Drive, Docs, Sheets, Calendar APIs - COMPLETED with wingman.bot.ai@gmail.com",
+      "priority": "high",
+      "dueDate": "2026-02-08",
+      "status": "complete"
+    }
+  ]
+}
