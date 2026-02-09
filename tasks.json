@@ -64,6 +64,15 @@
       "priority": "medium",
       "status": "pending",
       "category": "home"
+    },
+    {
+      "id": 8,
+      "title": "Restore & configure Sulla Bot",
+      "description": "Restored Sulla workspace, re-enabled binding, tested gym accountability responses",
+      "dueDate": "2026-02-09",
+      "priority": "high",
+      "status": "completed",
+      "category": "infrastructure"
     }
   ]
 }
