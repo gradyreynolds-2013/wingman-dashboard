@@ -1,0 +1,10 @@
+{
+  "wells": [
+    {"id": "204H", "name": "204H", "fileCount": 7},
+    {"id": "205H", "name": "205H", "fileCount": 7},
+    {"id": "504H", "name": "504H", "fileCount": 8},
+    {"id": "801H", "name": "801H", "fileCount": 9},
+    {"id": "901H", "name": "901H", "fileCount": 6}
+  ],
+  "lastSync": "2026-02-09T20:40:00Z"
+}
