@@ -1140,3 +1140,74 @@
 </body>
 </html>
 <!-- Test deploy: Mon Feb  9 20:07:35 UTC 2026 -->
+
+<script>
+// Add interactive features without breaking existing code
+
+// Task sorting
+let currentSort = 'dueDate';
+
+function sortTasks(sortBy) {
+    currentSort = sortBy;
+    const tasks = window.tasksData || [];
+    let sorted = [...tasks];
+    
+    if (sortBy === 'dueDate') {
+        sorted.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+    } else if (sortBy === 'priority') {
+        const pOrder = { high: 0, medium: 1, low: 2 };
+        sorted.sort((a, b) => (pOrder[a.priority] || 999) - (pOrder[b.priority] || 999));
+    } else if (sortBy === 'status') {
+        const sOrder = { pending: 0, 'in-progress': 1, completed: 2 };
+        sorted.sort((a, b) => (sOrder[a.status] || 999) - (sOrder[b.status] || 999));
+    } else if (sortBy === 'name') {
+        sorted.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    
+    renderTasks(sorted);
+}
+
+function renderTasks(tasks) {
+    const html = tasks.map(task => {
+        const dueDate = new Date(task.dueDate);
+        const today = new Date();
+        const daysUntil = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
+        const dueText = daysUntil === 0 ? 'Due today' : daysUntil === 1 ? 'Due tomorrow' : `Due in ${daysUntil} days`;
+        
+        return `
+            <div class="task-item ${task.priority}-priority">
+                <div class="task-content">
+                    <div class="task-title">${task.title}</div>
+                    <div class="task-description">${task.description}</div>
+                    <div class="task-meta"><span>${dueText}</span></div>
+                </div>
+                <span class="task-status">${task.status}</span>
+            </div>
+        `;
+    }).join('');
+    
+    const sortButtons = `
+        <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+            <button onclick="sortTasks('dueDate')" style="padding: 6px 12px; background: ${currentSort === 'dueDate' ? '#00d4ff' : 'rgba(0,212,255,0.2)'}; color: #000; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">📅 Due</button>
+            <button onclick="sortTasks('priority')" style="padding: 6px 12px; background: ${currentSort === 'priority' ? '#00d4ff' : 'rgba(0,212,255,0.2)'}; color: #000; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">🎯 Priority</button>
+            <button onclick="sortTasks('status')" style="padding: 6px 12px; background: ${currentSort === 'status' ? '#00d4ff' : 'rgba(0,212,255,0.2)'}; color: #000; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">✓ Status</button>
+            <button onclick="sortTasks('name')" style="padding: 6px 12px; background: ${currentSort === 'name' ? '#00d4ff' : 'rgba(0,212,255,0.2)'}; color: #000; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">A-Z</button>
+        </div>
+    `;
+    
+    document.getElementById('tasksSection').innerHTML = sortButtons + `<div class="task-list">${html}</div>`;
+}
+
+// After page loads, enhance loadTasks to include sort buttons
+window.addEventListener('load', function() {
+    // Store original loadTasks
+    const origLoad = window.loadTasks;
+    window.loadTasks = async function() {
+        await origLoad.call(this);
+        // Re-render with sort buttons
+        if (window.tasksData) {
+            renderTasks(window.tasksData);
+        }
+    };
+});
+</script>
