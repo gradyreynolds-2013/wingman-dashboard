@@ -2,7 +2,7 @@
   "wells": [
     {
       "well": "204H",
-      "status": "complete",
+      "status": "in progress",
       "documents": [
         {
           "type": "Well Plan",
@@ -50,7 +50,7 @@
     },
     {
       "well": "205H",
-      "status": "complete",
+      "status": "in progress",
       "documents": [
         {
           "type": "Well Plan",
@@ -98,7 +98,7 @@
     },
     {
       "well": "504H",
-      "status": "complete",
+      "status": "current",
       "documents": [
         {
           "type": "Well Plan",
@@ -152,7 +152,7 @@
     },
     {
       "well": "801H",
-      "status": "complete",
+      "status": "in progress",
       "documents": [
         {
           "type": "Well Plan",
@@ -212,7 +212,7 @@
     },
     {
       "well": "901H",
-      "status": "complete",
+      "status": "in progress",
       "documents": [
         {
           "type": "Well Plan",
