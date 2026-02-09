@@ -55,6 +55,15 @@
       "priority": "high",
       "dueDate": "2026-02-08",
       "status": "complete"
+    },
+    {
+      "id": 7,
+      "title": "Handle trash, cardboard & garage cleanup",
+      "description": "End of day cleanup - take out trash, recycle cardboard, organize garage",
+      "dueDate": "2026-02-09",
+      "priority": "medium",
+      "status": "pending",
+      "category": "home"
     }
   ]
 }
