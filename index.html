@@ -1211,3 +1211,48 @@ window.addEventListener('load', function() {
     };
 });
 </script>
+
+<script>
+// Add clear completed button
+function clearCompleted() {
+    if (window.tasksData) {
+        window.tasksData = window.tasksData.filter(task => task.status !== 'completed');
+        renderTasks(window.tasksData);
+    }
+}
+
+// Enhance renderTasks to include clear button
+const origRenderTasks = window.renderTasks || function() {};
+window.renderTasks = function(tasks) {
+    const sortButtons = `
+        <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; align-items: center;">
+            <button onclick="sortTasks('dueDate')" style="padding: 6px 12px; background: ${window.currentSort === 'dueDate' ? '#00d4ff' : 'rgba(0,212,255,0.2)'}; color: #000; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">📅 Due</button>
+            <button onclick="sortTasks('priority')" style="padding: 6px 12px; background: ${window.currentSort === 'priority' ? '#00d4ff' : 'rgba(0,212,255,0.2)'}; color: #000; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">🎯 Priority</button>
+            <button onclick="sortTasks('status')" style="padding: 6px 12px; background: ${window.currentSort === 'status' ? '#00d4ff' : 'rgba(0,212,255,0.2)'}; color: #000; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">✓ Status</button>
+            <button onclick="sortTasks('name')" style="padding: 6px 12px; background: ${window.currentSort === 'name' ? '#00d4ff' : 'rgba(0,212,255,0.2)'}; color: #000; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">A-Z</button>
+            <div style="flex: 1;"></div>
+            <button onclick="clearCompleted()" style="padding: 6px 12px; background: 'rgba(255, 107, 107, 0.3)'; color: #ff6b6b; border: 1px solid #ff6b6b; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">🗑️ Clear Completed</button>
+        </div>
+    `;
+    
+    const html = tasks.map(task => {
+        const dueDate = new Date(task.dueDate);
+        const today = new Date();
+        const daysUntil = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
+        const dueText = daysUntil === 0 ? 'Due today' : daysUntil === 1 ? 'Due tomorrow' : `Due in ${daysUntil} days`;
+        
+        return `
+            <div class="task-item ${task.priority}-priority">
+                <div class="task-content">
+                    <div class="task-title">${task.title}</div>
+                    <div class="task-description">${task.description}</div>
+                    <div class="task-meta"><span>${dueText}</span></div>
+                </div>
+                <span class="task-status">${task.status}</span>
+            </div>
+        `;
+    }).join('');
+    
+    document.getElementById('tasksSection').innerHTML = sortButtons + `<div class="task-list">${html}</div>`;
+};
+</script>
