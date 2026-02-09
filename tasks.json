@@ -6,7 +6,7 @@
       "description": "✅ COMPLETE - HTML/CSS/JS dashboard with tasks, links, well files, activity timeline. Self-hosted on EC2. Keep-alive script ready.",
       "priority": "high",
       "dueDate": "2026-02-08",
-      "status": "complete"
+      "status": "completed"
     },
     {
       "id": 3,
@@ -54,7 +54,7 @@
       "description": "Create service account and integrate with Drive, Docs, Sheets, Calendar APIs - COMPLETED with wingman.bot.ai@gmail.com",
       "priority": "high",
       "dueDate": "2026-02-08",
-      "status": "complete"
+      "status": "completed"
     },
     {
       "id": 7,
