@@ -1,21 +1,21 @@
 {
-  "updated_at": "2026-02-10T02:04:43.782108Z",
+  "updated_at": "2026-02-10T02:57:33.500390Z",
   "context": {
-    "percentage": 74,
-    "used_tokens": 97059,
-    "max_tokens": 131072,
-    "tokens_display": "97k/131k"
+    "percentage": 61,
+    "used_tokens": 122358,
+    "max_tokens": 200000,
+    "tokens_display": "122k/200k"
   },
   "compaction": {
     "count": 0,
     "last_date": "2026-02-10"
   },
   "costs": {
-    "daily": 0.18,
-    "weekly": 1.24,
-    "monthly": 5.32
+    "daily": 0.09,
+    "weekly": 0.6,
+    "monthly": 2.55
   },
-  "model": "grok-4-1-fast-reasoning",
+  "model": "claude-haiku-4-5",
   "model_breakdown": [
     {
       "model": "claude-sonnet",
@@ -23,7 +23,7 @@
       "total_tokens": 267279,
       "input_tokens": 57,
       "output_tokens": 4171,
-      "session_count": 13,
+      "session_count": 12,
       "cost_rate": 3.0,
       "costs": {
         "daily": 0.08,
@@ -32,19 +32,19 @@
       }
     },
     {
-      "model": "grok",
-      "display_name": "Grok",
-      "total_tokens": 97059,
-      "input_tokens": 248,
-      "output_tokens": 64,
+      "model": "claude-haiku",
+      "display_name": "Claude Haiku",
+      "total_tokens": 122358,
+      "input_tokens": 10,
+      "output_tokens": 278,
       "session_count": 1,
-      "cost_rate": 10.0,
+      "cost_rate": 0.4,
       "costs": {
-        "daily": 0.1,
-        "weekly": 0.68,
-        "monthly": 2.91
+        "daily": 0.0,
+        "weekly": 0.03,
+        "monthly": 0.15
       }
     }
   ],
-  "total_sessions": 14
+  "total_sessions": 13
 }
