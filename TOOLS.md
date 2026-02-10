@@ -16,6 +16,33 @@ Things like:
 - Device nicknames
 - Anything environment-specific
 
+## Google Drive (gog)
+
+**Account:** cachecabin@gmail.com
+**Wingman Folder ID:** 1YYLYqXMlRuD3_iOPMUybM5lAenD2i4fH
+**Rule:** ALL uploads go to Wingman folder automatically
+
+Setup (already done):
+```bash
+export GOG_KEYRING_PASSWORD="wingman2026"
+export GOG_ACCOUNT="cachecabin@gmail.com"
+gog drive upload <file> --name "<name>" --parent 1YYLYqXMlRuD3_iOPMUybM5lAenD2i4fH
+```
+
+## Solar System Monitoring
+
+**Huntsville Cabin** (off-grid, Utah)
+- Location: https://www.opticsre.com/login
+- Login: trentperry149@yahoo.com / AydenZP1109!
+- Script: `/home/ubuntu/clawd/scripts/solar-check.py`
+- Daily Report: 5:00 AM CST (11:00 AM UTC)
+- Monitors:
+  - Solar production (kW / kWh)
+  - Generator status (running/off)
+  - Generator production (kWh last 24hrs)
+  - Battery voltage & temperature
+  - Load consumption
+
 ## Examples
 
 ```markdown

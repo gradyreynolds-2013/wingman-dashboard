@@ -1,0 +1,9 @@
+# Wingman Google Drive Configuration
+# Created: 2026-01-30
+
+WINGMAN_FOLDER_ID="1YYLYqXMlRuD3_iOPMUybM5lAenD2i4fH"
+WINGMAN_FOLDER_NAME="Wingman"
+GOG_ACCOUNT="cachecabin@gmail.com"
+GOG_KEYRING_PASSWORD="wingman2026"
+
+# Only upload/create files in this folder - nowhere else in Drive
