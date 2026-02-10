@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-02-10T02:57:33.500390Z",
+  "updated_at": "2026-02-10T03:12:36.708945Z",
   "context": {
-    "percentage": 61,
-    "used_tokens": 122358,
+    "percentage": 65,
+    "used_tokens": 131223,
     "max_tokens": 200000,
-    "tokens_display": "122k/200k"
+    "tokens_display": "131k/200k"
   },
   "compaction": {
     "count": 0,
@@ -13,7 +13,7 @@
   "costs": {
     "daily": 0.09,
     "weekly": 0.6,
-    "monthly": 2.55
+    "monthly": 2.56
   },
   "model": "claude-haiku-4-5",
   "model_breakdown": [
@@ -34,15 +34,15 @@
     {
       "model": "claude-haiku",
       "display_name": "Claude Haiku",
-      "total_tokens": 122358,
+      "total_tokens": 131223,
       "input_tokens": 10,
-      "output_tokens": 278,
+      "output_tokens": 134,
       "session_count": 1,
       "cost_rate": 0.4,
       "costs": {
-        "daily": 0.0,
-        "weekly": 0.03,
-        "monthly": 0.15
+        "daily": 0.01,
+        "weekly": 0.04,
+        "monthly": 0.16
       }
     }
   ],
