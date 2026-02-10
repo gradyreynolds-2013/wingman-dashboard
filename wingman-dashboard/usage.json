@@ -1,20 +1,50 @@
 {
-  "updated_at": "2026-02-10T01:42:32.408922Z",
+  "updated_at": "2026-02-10T02:04:43.782108Z",
   "context": {
-    "percentage": 73,
-    "used_tokens": 96000,
-    "max_tokens": 131000,
-    "tokens_display": "96k/131k"
+    "percentage": 74,
+    "used_tokens": 97059,
+    "max_tokens": 131072,
+    "tokens_display": "97k/131k"
   },
   "compaction": {
     "count": 0,
     "last_date": "2026-02-10"
   },
   "costs": {
-    "daily": 19.2,
-    "weekly": 134.4,
-    "monthly": 576.0,
-    "rate_per_mtok": 10.0
+    "daily": 0.18,
+    "weekly": 1.24,
+    "monthly": 5.32
   },
-  "model": "grok-4-1-fast-reasoning"
+  "model": "grok-4-1-fast-reasoning",
+  "model_breakdown": [
+    {
+      "model": "claude-sonnet",
+      "display_name": "Claude Sonnet",
+      "total_tokens": 267279,
+      "input_tokens": 57,
+      "output_tokens": 4171,
+      "session_count": 13,
+      "cost_rate": 3.0,
+      "costs": {
+        "daily": 0.08,
+        "weekly": 0.56,
+        "monthly": 2.41
+      }
+    },
+    {
+      "model": "grok",
+      "display_name": "Grok",
+      "total_tokens": 97059,
+      "input_tokens": 248,
+      "output_tokens": 64,
+      "session_count": 1,
+      "cost_rate": 10.0,
+      "costs": {
+        "daily": 0.1,
+        "weekly": 0.68,
+        "monthly": 2.91
+      }
+    }
+  ],
+  "total_sessions": 14
 }

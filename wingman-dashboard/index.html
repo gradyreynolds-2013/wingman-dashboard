@@ -849,6 +849,179 @@
             color: var(--primary);
         }
 
+        /* Model Breakdown */
+        .model-breakdown-section {
+            margin-bottom: 50px;
+        }
+
+        .model-breakdown-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+        }
+
+        .model-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .model-card {
+            background: var(--card-bg);
+            border: 1.5px solid var(--card-border);
+            padding: 24px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .model-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 12px 12px 0 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .model-card:hover {
+            border-color: rgba(0, 212, 255, 0.5);
+            transform: translateY(-4px);
+        }
+
+        .model-card:hover::before {
+            opacity: 1;
+        }
+
+        .model-card.claude-sonnet::before { background: linear-gradient(90deg, #7c3aed, #a855f7); }
+        .model-card.claude-opus::before { background: linear-gradient(90deg, #ec4899, #f472b6); }
+        .model-card.claude-haiku::before { background: linear-gradient(90deg, #06b6d4, #22d3ee); }
+        .model-card.grok::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .model-card.gemini::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .model-card.gpt-4o::before { background: linear-gradient(90deg, #10b981, #34d399); }
+        .model-card.dall-e::before { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+        .model-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .model-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .model-emoji {
+            font-size: 24px;
+        }
+
+        .model-tokens {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .model-tokens-label {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .model-cost {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .model-cost-label {
+            font-size: 9px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+        }
+
+        .model-sessions {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            padding: 4px 8px;
+            background: rgba(0, 212, 255, 0.08);
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .pie-chart-card {
+            background: var(--card-bg);
+            border: 1.5px solid var(--card-border);
+            padding: 32px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pie-chart-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+        }
+
+        #modelPieChart {
+            max-width: 280px;
+            max-height: 280px;
+        }
+
+        .pie-legend {
+            margin-top: 24px;
+            width: 100%;
+        }
+
+        .legend-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background: rgba(0, 212, 255, 0.05);
+            border-radius: 6px;
+            font-size: 11px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: 8px;
+            display: inline-block;
+        }
+
+        .legend-label {
+            flex: 1;
+            color: var(--text-secondary);
+        }
+
+        .legend-value {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
         @media (max-width: 900px) {
             .usage-container {
                 grid-template-columns: 1fr;
@@ -856,6 +1029,14 @@
 
             .costs-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .model-breakdown-container {
+                grid-template-columns: 1fr;
+            }
+
+            .model-cards {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             }
         }
     </style>
@@ -932,6 +1113,21 @@
                 <div class="compaction-info">
                     <span class="compaction-label">Compactions</span>
                     <span class="compaction-count" id="compactionCount">--</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Breakdown -->
+        <div class="model-breakdown-section">
+            <div class="section-title">Model Usage Breakdown</div>
+            <div class="model-breakdown-container">
+                <div class="model-cards" id="modelCards">
+                    <div class="loading">Loading model breakdown...</div>
+                </div>
+                <div class="pie-chart-card">
+                    <div class="pie-chart-title">Distribution</div>
+                    <canvas id="modelPieChart"></canvas>
+                    <div class="pie-legend" id="pieLegend"></div>
                 </div>
             </div>
         </div>
@@ -1033,9 +1229,143 @@
                 // Update compaction count
                 document.getElementById('compactionCount').textContent = data.compaction.count;
 
+                // Load model breakdown
+                if (data.model_breakdown) {
+                    loadModelBreakdown(data.model_breakdown);
+                }
+
             } catch (error) {
                 console.error('Error loading usage:', error);
             }
+        }
+
+        function getModelEmoji(modelKey) {
+            const emojis = {
+                'claude-sonnet': '🎭',
+                'claude-opus': '👑',
+                'claude-haiku': '✨',
+                'grok': '🚀',
+                'gemini': '💎',
+                'gpt-4o': '🤖',
+                'gpt': '🤖',
+                'dall-e': '🎨',
+                'unknown': '❓'
+            };
+            return emojis[modelKey] || '🔮';
+        }
+
+        function getModelColor(modelKey) {
+            const colors = {
+                'claude-sonnet': '#7c3aed',
+                'claude-opus': '#ec4899',
+                'claude-haiku': '#06b6d4',
+                'grok': '#f59e0b',
+                'gemini': '#3b82f6',
+                'gpt-4o': '#10b981',
+                'gpt': '#10b981',
+                'dall-e': '#ef4444',
+                'unknown': '#94a3b8'
+            };
+            return colors[modelKey] || '#00d4ff';
+        }
+
+        function formatTokens(tokens) {
+            if (tokens >= 1000000) {
+                return (tokens / 1000000).toFixed(1) + 'M';
+            } else if (tokens >= 1000) {
+                return (tokens / 1000).toFixed(1) + 'k';
+            }
+            return tokens.toString();
+        }
+
+        function loadModelBreakdown(models) {
+            const container = document.getElementById('modelCards');
+            
+            if (!models || models.length === 0) {
+                container.innerHTML = '<div class="loading">No model data available</div>';
+                return;
+            }
+
+            // Render model cards
+            const cardsHtml = models.map(model => `
+                <div class="model-card ${model.model}">
+                    <div class="model-card-header">
+                        <div class="model-name">${model.display_name}</div>
+                        <div class="model-emoji">${getModelEmoji(model.model)}</div>
+                    </div>
+                    <div class="model-tokens">${formatTokens(model.total_tokens)}</div>
+                    <div class="model-tokens-label">Total Tokens</div>
+                    <div class="model-cost">$${model.costs.monthly.toFixed(2)}</div>
+                    <div class="model-cost-label">Monthly Est.</div>
+                    <div class="model-sessions">${model.session_count} sessions</div>
+                </div>
+            `).join('');
+
+            container.innerHTML = cardsHtml;
+
+            // Render pie chart
+            renderPieChart(models);
+        }
+
+        function renderPieChart(models) {
+            const canvas = document.getElementById('modelPieChart');
+            const ctx = canvas.getContext('2d');
+            const legend = document.getElementById('pieLegend');
+
+            // Set canvas size
+            canvas.width = 280;
+            canvas.height = 280;
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 110;
+
+            // Calculate totals
+            const totalTokens = models.reduce((sum, m) => sum + m.total_tokens, 0);
+            
+            // Draw pie slices
+            let startAngle = -Math.PI / 2;
+            
+            models.forEach(model => {
+                const sliceAngle = (model.total_tokens / totalTokens) * 2 * Math.PI;
+                
+                // Draw slice
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
+                ctx.closePath();
+                ctx.fillStyle = getModelColor(model.model);
+                ctx.fill();
+                
+                // Draw border
+                ctx.strokeStyle = '#0a0e27';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                startAngle += sliceAngle;
+            });
+
+            // Draw center circle (donut effect)
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius * 0.5, 0, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
+            ctx.fill();
+
+            // Render legend
+            const legendHtml = models.map(model => {
+                const percentage = ((model.total_tokens / totalTokens) * 100).toFixed(1);
+                return `
+                    <div class="legend-item">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div class="legend-color" style="background: ${getModelColor(model.model)}"></div>
+                            <div class="legend-label">${model.display_name}</div>
+                        </div>
+                        <div class="legend-value">${percentage}%</div>
+                    </div>
+                `;
+            }).join('');
+
+            legend.innerHTML = legendHtml;
         }
 
         async function loadDashboard() {
