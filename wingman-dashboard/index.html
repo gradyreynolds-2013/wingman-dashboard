@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wingman Mission Control</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #00d4ff;
+            --dark-bg: #0a0e27;
+            --card-bg: rgba(15, 23, 42, 0.7);
+            --text-primary: #f1f5f9;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
+            background: linear-gradient(135deg, #0a0e27 0%, #0f1629 50%, #1a0f2e 100%);
+            color: var(--text-primary);
+            padding: 40px 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+        }
+        .logo { font-size: 32px; font-weight: 900; color: var(--primary); }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .card {
+            background: var(--card-bg);
+            border: 1.5px solid rgba(0, 212, 255, 0.15);
+            border-radius: 12px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+        }
+        .gauge {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+        .gauge-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0deg, transparent 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 900;
+        }
+        .costs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .cost-box {
+            background: rgba(0, 212, 255, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .cost-amount {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--primary);
+        }
+        .cost-label {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+        .model-card {
+            background: rgba(0, 212, 255, 0.08);
+            border: 1.5px solid rgba(0, 212, 255, 0.2);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .model-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .model-emoji { font-size: 32px; margin-bottom: 8px; }
+        .model-name { font-size: 12px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+        .model-tokens { font-size: 14px; color: var(--text-primary); font-weight: 600; }
+        .model-cost { font-size: 12px; color: #94a3b8; margin-top: 6px; }
+        .pie-chart { width: 200px; height: 200px; margin: 20px auto; }
+        section-title { font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 20px; display: block; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="logo">🐦‍🔥 Wingman Mission Control</div>
+        <div style="font-size: 12px; color: #94a3b8;">Last updated: <span id="updateTime">--</span></div>
+    </header>
+
+    <div class="dashboard-grid">
+        <!-- Context Gauge -->
+        <div class="card">
+            <h3 style="margin-bottom: 20px; color: var(--primary);">📊 Context Usage</h3>
+            <div class="gauge">
+                <div class="gauge-circle" id="gaugeValue">73%</div>
+            </div>
+            <div style="text-align: center; font-size: 12px; color: #94a3b8;" id="tokensDisplay">96k/131k</div>
+            <div style="text-align: center; font-size: 11px; color: var(--primary); margin-top: 8px; font-weight: 700;" id="modelDisplay">GROK 4.1</div>
+        </div>
+
+        <!-- Estimated Costs -->
+        <div class="card">
+            <h3 style="margin-bottom: 20px; color: var(--primary);">💰 Estimated Costs</h3>
+            <div class="costs">
+                <div class="cost-box">
+                    <div class="cost-amount" id="costDaily">$19.20</div>
+                    <div class="cost-label">DAILY</div>
+                </div>
+                <div class="cost-box">
+                    <div class="cost-amount" id="costWeekly">$134.40</div>
+                    <div class="cost-label">WEEKLY</div>
+                </div>
+                <div class="cost-box">
+                    <div class="cost-amount" id="costMonthly">$576</div>
+                    <div class="cost-label">MONTHLY</div>
+                </div>
+            </div>
+            <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(0, 212, 255, 0.1); text-align: center;">
+                <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Compactions</div>
+                <div style="font-size: 24px; font-weight: 900; color: var(--primary);" id="compactionCount">0</div>
+            </div>
+        </div>
+
+        <!-- Activity Placeholder -->
+        <div class="card">
+            <h3 style="margin-bottom: 20px; color: var(--primary);">🔥 Activity Feed</h3>
+            <div style="font-size: 12px; color: #94a3b8;">Dashboard live • Models tracked</div>
+        </div>
+    </div>
+
+    <!-- MODEL BREAKDOWN SECTION -->
+    <div class="card">
+        <section-title>🤖 Model Usage Breakdown</section-title>
+        
+        <div style="display: grid; grid-template-columns: 1fr 300px; gap: 30px;">
+            <!-- Model Cards -->
+            <div class="model-grid" id="modelCards">
+                <div class="model-card">
+                    <div class="model-emoji">🎭</div>
+                    <div class="model-name">Claude Sonnet</div>
+                    <div class="model-tokens">267k tokens</div>
+                    <div class="model-cost">$2.41/mo</div>
+                </div>
+                <div class="model-card">
+                    <div class="model-emoji">👑</div>
+                    <div class="model-name">Claude Opus</div>
+                    <div class="model-tokens">0 tokens</div>
+                    <div class="model-cost">$0/mo</div>
+                </div>
+                <div class="model-card">
+                    <div class="model-emoji">✨</div>
+                    <div class="model-name">Claude Haiku</div>
+                    <div class="model-tokens">131k tokens</div>
+                    <div class="model-cost">$0.16/mo</div>
+                </div>
+                <div class="model-card">
+                    <div class="model-emoji">🚀</div>
+                    <div class="model-name">Grok</div>
+                    <div class="model-tokens">0 tokens</div>
+                    <div class="model-cost">$0/mo</div>
+                </div>
+                <div class="model-card">
+                    <div class="model-emoji">💎</div>
+                    <div class="model-name">Gemini</div>
+                    <div class="model-tokens">0 tokens</div>
+                    <div class="model-cost">$0/mo</div>
+                </div>
+                <div class="model-card">
+                    <div class="model-emoji">🤖</div>
+                    <div class="model-name">GPT-4o</div>
+                    <div class="model-tokens">0 tokens</div>
+                    <div class="model-cost">$0/mo</div>
+                </div>
+                <div class="model-card">
+                    <div class="model-emoji">🎨</div>
+                    <div class="model-name">DALL-E</div>
+                    <div class="model-tokens">0 tokens</div>
+                    <div class="model-cost">$0/mo</div>
+                </div>
+            </div>
+
+            <!-- Pie Chart -->
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <canvas id="pieChart" width="200" height="200" style="margin-bottom: 20px;"></canvas>
+                <div id="pieLegend" style="font-size: 11px; color: #94a3b8;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function loadDashboard() {
+        try {
+            const resp = await fetch('./usage.json');
+            const data = await resp.json();
+
+            // Update gauge
+            document.getElementById('gaugeValue').textContent = data.context.percentage + '%';
+            document.getElementById('tokensDisplay').textContent = data.context.tokens_display;
+            document.getElementById('modelDisplay').textContent = data.model.toUpperCase();
+
+            // Update costs
+            document.getElementById('costDaily').textContent = '$' + data.costs.daily.toFixed(2);
+            document.getElementById('costWeekly').textContent = '$' + data.costs.weekly.toFixed(2);
+            document.getElementById('costMonthly').textContent = '$' + data.costs.monthly.toFixed(0);
+            document.getElementById('compactionCount').textContent = data.compaction.count;
+
+            // Update timestamp
+            document.getElementById('updateTime').textContent = new Date(data.updated_at).toLocaleTimeString();
+
+            // Load models
+            if (data.model_breakdown && data.model_breakdown.length > 0) {
+                loadModels(data.model_breakdown);
+                drawPieChart(data.model_breakdown);
+            }
+        } catch (e) {
+            console.error('Load failed:', e);
+        }
+    }
+
+    function loadModels(models) {
+        const container = document.getElementById('modelCards');
+        const emojis = { 'claude-sonnet': '🎭', 'claude-opus': '👑', 'claude-haiku': '✨', 'grok': '🚀', 'gemini': '💎', 'gpt-4o': '🤖', 'dall-e': '🎨' };
+        
+        container.innerHTML = models.map(m => `
+            <div class="model-card">
+                <div class="model-emoji">${emojis[m.model] || '❓'}</div>
+                <div class="model-name">${m.display_name}</div>
+                <div class="model-tokens">${(m.total_tokens / 1000).toFixed(0)}k tokens</div>
+                <div class="model-cost">$${m.costs.monthly.toFixed(2)}/mo</div>
+            </div>
+        `).join('');
+    }
+
+    function drawPieChart(models) {
+        const canvas = document.getElementById('pieChart');
+        const ctx = canvas.getContext('2d');
+        const total = models.reduce((s, m) => s + m.total_tokens, 0);
+        const colors = ['#7c3aed', '#ec4899', '#06b6d4', '#f59e0b', '#3b82f6', '#10b981', '#ef4444'];
+        
+        let angle = 0;
+        models.forEach((m, i) => {
+            const sliceAngle = (m.total_tokens / total) * Math.PI * 2;
+            ctx.fillStyle = colors[i] || '#999';
+            ctx.beginPath();
+            ctx.arc(100, 100, 80, angle, angle + sliceAngle);
+            ctx.lineTo(100, 100);
+            ctx.fill();
+            angle += sliceAngle;
+        });
+
+        let legend = models.map((m, i) => `<div style="margin: 4px 0;"><span style="display: inline-block; width: 12px; height: 12px; background: ${colors[i]}; margin-right: 6px;"></span>${m.display_name}</div>`).join('');
+        document.getElementById('pieLegend').innerHTML = legend;
+    }
+
+    loadDashboard();
+    setInterval(loadDashboard, 300000); // Update every 5 min
+</script>
+</body>
+</html>
