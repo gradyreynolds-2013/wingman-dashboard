@@ -3,283 +3,873 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wingman Mission Control</title>
+    <title>Wingman Dashboard</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --primary: #00d4ff;
-            --dark-bg: #0a0e27;
-            --card-bg: rgba(15, 23, 42, 0.7);
-            --text-primary: #f1f5f9;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
-            background: linear-gradient(135deg, #0a0e27 0%, #0f1629 50%, #1a0f2e 100%);
-            color: var(--text-primary);
-            padding: 40px 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
         }
-        .container { max-width: 1400px; margin: 0 auto; }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
         header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 60px;
-            padding-bottom: 30px;
-            border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+            flex-wrap: wrap;
+            gap: 15px;
         }
-        .logo { font-size: 32px; font-weight: 900; color: var(--primary); }
+
+        h1 {
+            color: #667eea;
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        /* Dashboard Grid */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin-bottom: 40px;
+            gap: 20px;
+            margin-bottom: 25px;
         }
+
         .card {
-            background: var(--card-bg);
-            border: 1.5px solid rgba(0, 212, 255, 0.15);
-            border-radius: 12px;
-            padding: 24px;
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-        .gauge {
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h2 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Context Gauge */
+        .gauge-container {
+            position: relative;
             width: 200px;
             height: 200px;
-            margin: 0 auto 20px;
-            position: relative;
+            margin: 20px auto;
         }
-        .gauge-circle {
+
+        .gauge {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: conic-gradient(var(--primary) 0deg, transparent 0deg);
+            background: conic-gradient(#667eea 0deg, #667eea calc(var(--percentage) * 3.6deg), #e0e0e0 calc(var(--percentage) * 3.6deg));
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
-            font-weight: 900;
         }
-        .costs {
+
+        .gauge::before {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .gauge-value {
+            position: absolute;
+            z-index: 10;
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .gauge-label {
+            text-align: center;
+            margin-top: 10px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* Costs Section */
+        .costs-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin-top: 20px;
+            gap: 15px;
+            margin-top: 15px;
         }
-        .cost-box {
-            background: rgba(0, 212, 255, 0.05);
-            padding: 12px;
-            border-radius: 8px;
+
+        .cost-item {
             text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            color: white;
         }
+
         .cost-amount {
-            font-size: 24px;
-            font-weight: 900;
-            color: var(--primary);
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 5px;
         }
+
         .cost-label {
-            font-size: 11px;
-            color: #94a3b8;
-            margin-top: 4px;
+            font-size: 0.85em;
+            opacity: 0.9;
         }
+
+        /* Compactions Counter */
+        .compaction-display {
+            text-align: center;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .compaction-number {
+            font-size: 3em;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        /* Model Breakdown Section */
+        .model-breakdown {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+
+        .model-breakdown h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 700;
+        }
+
         .model-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
+
         .model-card {
-            background: rgba(0, 212, 255, 0.08);
-            border: 1.5px solid rgba(0, 212, 255, 0.2);
-            border-radius: 10px;
-            padding: 16px;
-            text-align: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
             transition: all 0.3s;
         }
+
         .model-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
         }
-        .model-emoji { font-size: 32px; margin-bottom: 8px; }
-        .model-name { font-size: 12px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
-        .model-tokens { font-size: 14px; color: var(--text-primary); font-weight: 600; }
-        .model-cost { font-size: 12px; color: #94a3b8; margin-top: 6px; }
-        .pie-chart { width: 200px; height: 200px; margin: 20px auto; }
-        section-title { font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 20px; display: block; }
+
+        .model-card.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .model-card.active .model-name,
+        .model-card.active .model-stat-value {
+            color: white;
+        }
+
+        .model-name {
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .model-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .model-stat {
+            text-align: center;
+        }
+
+        .model-stat-value {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .model-stat-label {
+            font-size: 0.75em;
+            opacity: 0.8;
+            margin-top: 3px;
+        }
+
+        .model-cost {
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+
+        .model-card.active .model-cost {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Pie Chart */
+        .chart-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        #modelPieChart {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Activity Feed */
+        .activity-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .activity-time {
+            font-size: 0.8em;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
+        /* Tasks */
+        .task-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .task-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+        }
+
+        .task-item.completed {
+            opacity: 0.6;
+            text-decoration: line-through;
+        }
+
+        /* Calendar */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 15px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border-radius: 8px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .calendar-day:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .calendar-day.today {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+        }
+
+        .calendar-day.has-event {
+            background: #764ba2;
+            color: white;
+        }
+
+        .calendar-header {
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .model-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .costs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <header>
-        <div class="logo">🐦‍🔥 Wingman Mission Control</div>
-        <div style="font-size: 12px; color: #94a3b8;">Last updated: <span id="updateTime">--</span></div>
-    </header>
-
-    <div class="dashboard-grid">
-        <!-- Context Gauge -->
-        <div class="card">
-            <h3 style="margin-bottom: 20px; color: var(--primary);">📊 Context Usage</h3>
-            <div class="gauge">
-                <div class="gauge-circle" id="gaugeValue">73%</div>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🤖 Wingman Dashboard</h1>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search dashboard...">
             </div>
-            <div style="text-align: center; font-size: 12px; color: #94a3b8;" id="tokensDisplay">96k/131k</div>
-            <div style="text-align: center; font-size: 11px; color: var(--primary); margin-top: 8px; font-weight: 700;" id="modelDisplay">GROK 4.1</div>
+        </header>
+
+        <!-- Top Row: Context, Costs, Compactions -->
+        <div class="dashboard-grid">
+            <!-- Context Gauge -->
+            <div class="card">
+                <h2>📊 Context Usage</h2>
+                <div class="gauge-container">
+                    <div class="gauge" id="contextGauge" style="--percentage: 0">
+                        <div class="gauge-value" id="gaugeValue">0%</div>
+                    </div>
+                </div>
+                <div class="gauge-label" id="gaugeLabel">Loading...</div>
+            </div>
+
+            <!-- Estimated Costs -->
+            <div class="card">
+                <h2>💰 Estimated Costs</h2>
+                <div class="costs-grid">
+                    <div class="cost-item">
+                        <div class="cost-amount" id="costDaily">$0.00</div>
+                        <div class="cost-label">Daily</div>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-amount" id="costWeekly">$0.00</div>
+                        <div class="cost-label">Weekly</div>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-amount" id="costMonthly">$0.00</div>
+                        <div class="cost-label">Monthly</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compactions Counter -->
+            <div class="card">
+                <h2>🔄 Compactions</h2>
+                <div class="compaction-display">
+                    <div class="compaction-number" id="compactionCount">0</div>
+                    <div class="cost-label" id="compactionDate">Last: Never</div>
+                </div>
+            </div>
         </div>
 
-        <!-- Estimated Costs -->
-        <div class="card">
-            <h3 style="margin-bottom: 20px; color: var(--primary);">💰 Estimated Costs</h3>
-            <div class="costs">
-                <div class="cost-box">
-                    <div class="cost-amount" id="costDaily">$19.20</div>
-                    <div class="cost-label">DAILY</div>
-                </div>
-                <div class="cost-box">
-                    <div class="cost-amount" id="costWeekly">$134.40</div>
-                    <div class="cost-label">WEEKLY</div>
-                </div>
-                <div class="cost-box">
-                    <div class="cost-amount" id="costMonthly">$576</div>
-                    <div class="cost-label">MONTHLY</div>
-                </div>
+        <!-- MODEL BREAKDOWN SECTION (PROMINENT) -->
+        <div class="model-breakdown">
+            <h2>🤖 Model Usage Breakdown</h2>
+            <div class="model-grid" id="modelGrid">
+                <!-- Model cards will be populated by JavaScript -->
             </div>
-            <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(0, 212, 255, 0.1); text-align: center;">
-                <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Compactions</div>
-                <div style="font-size: 24px; font-weight: 900; color: var(--primary);" id="compactionCount">0</div>
+            <div class="chart-container">
+                <canvas id="modelPieChart"></canvas>
             </div>
         </div>
 
-        <!-- Activity Placeholder -->
-        <div class="card">
-            <h3 style="margin-bottom: 20px; color: var(--primary);">🔥 Activity Feed</h3>
-            <div style="font-size: 12px; color: #94a3b8;">Dashboard live • Models tracked</div>
-        </div>
-    </div>
-
-    <!-- MODEL BREAKDOWN SECTION -->
-    <div class="card">
-        <section-title>🤖 Model Usage Breakdown</section-title>
-        
-        <div style="display: grid; grid-template-columns: 1fr 300px; gap: 30px;">
-            <!-- Model Cards -->
-            <div class="model-grid" id="modelCards">
-                <div class="model-card">
-                    <div class="model-emoji">🎭</div>
-                    <div class="model-name">Claude Sonnet</div>
-                    <div class="model-tokens">267k tokens</div>
-                    <div class="model-cost">$2.41/mo</div>
-                </div>
-                <div class="model-card">
-                    <div class="model-emoji">👑</div>
-                    <div class="model-name">Claude Opus</div>
-                    <div class="model-tokens">0 tokens</div>
-                    <div class="model-cost">$0/mo</div>
-                </div>
-                <div class="model-card">
-                    <div class="model-emoji">✨</div>
-                    <div class="model-name">Claude Haiku</div>
-                    <div class="model-tokens">131k tokens</div>
-                    <div class="model-cost">$0.16/mo</div>
-                </div>
-                <div class="model-card">
-                    <div class="model-emoji">🚀</div>
-                    <div class="model-name">Grok</div>
-                    <div class="model-tokens">0 tokens</div>
-                    <div class="model-cost">$0/mo</div>
-                </div>
-                <div class="model-card">
-                    <div class="model-emoji">💎</div>
-                    <div class="model-name">Gemini</div>
-                    <div class="model-tokens">0 tokens</div>
-                    <div class="model-cost">$0/mo</div>
-                </div>
-                <div class="model-card">
-                    <div class="model-emoji">🤖</div>
-                    <div class="model-name">GPT-4o</div>
-                    <div class="model-tokens">0 tokens</div>
-                    <div class="model-cost">$0/mo</div>
-                </div>
-                <div class="model-card">
-                    <div class="model-emoji">🎨</div>
-                    <div class="model-name">DALL-E</div>
-                    <div class="model-tokens">0 tokens</div>
-                    <div class="model-cost">$0/mo</div>
+        <!-- Bottom Row: Activity, Tasks, Calendar -->
+        <div class="dashboard-grid">
+            <!-- Activity Feed -->
+            <div class="card">
+                <h2>📝 Activity Feed</h2>
+                <div class="activity-list" id="activityList">
+                    <div class="loading">Loading activities...</div>
                 </div>
             </div>
 
-            <!-- Pie Chart -->
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <canvas id="pieChart" width="200" height="200" style="margin-bottom: 20px;"></canvas>
-                <div id="pieLegend" style="font-size: 11px; color: #94a3b8;"></div>
+            <!-- Tasks -->
+            <div class="card">
+                <h2>✅ Tasks</h2>
+                <div class="task-list" id="taskList">
+                    <div class="loading">Loading tasks...</div>
+                </div>
+            </div>
+
+            <!-- Calendar -->
+            <div class="card">
+                <h2>📅 Calendar</h2>
+                <div id="calendarContainer">
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Calendar will be populated by JavaScript -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    async function loadDashboard() {
-        try {
-            const resp = await fetch('./usage.json');
-            const data = await resp.json();
+    <script>
+        // Model definitions with colors and default values
+        const MODEL_DEFINITIONS = [
+            { key: 'claude-sonnet', displayName: 'Claude Sonnet', color: '#667eea' },
+            { key: 'claude-opus', displayName: 'Claude Opus', color: '#764ba2' },
+            { key: 'claude-haiku', displayName: 'Claude Haiku', color: '#f093fb' },
+            { key: 'grok', displayName: 'Grok', color: '#00d4ff' },
+            { key: 'gemini', displayName: 'Gemini', color: '#4285f4' },
+            { key: 'gpt-4o', displayName: 'GPT-4o', color: '#10a37f' },
+            { key: 'dall-e', displayName: 'DALL-E', color: '#ff6b6b' }
+        ];
 
-            // Update gauge
-            document.getElementById('gaugeValue').textContent = data.context.percentage + '%';
-            document.getElementById('tokensDisplay').textContent = data.context.tokens_display;
-            document.getElementById('modelDisplay').textContent = data.model.toUpperCase();
+        // Global data storage
+        let dashboardData = {
+            usage: null,
+            activity: null,
+            tasks: null
+        };
 
-            // Update costs
-            document.getElementById('costDaily').textContent = '$' + data.costs.daily.toFixed(2);
-            document.getElementById('costWeekly').textContent = '$' + data.costs.weekly.toFixed(2);
-            document.getElementById('costMonthly').textContent = '$' + data.costs.monthly.toFixed(0);
-            document.getElementById('compactionCount').textContent = data.compaction.count;
+        // Load all data
+        async function loadAllData() {
+            try {
+                // Load usage data
+                const usageResponse = await fetch('usage.json');
+                dashboardData.usage = await usageResponse.json();
+                updateContextGauge();
+                updateCosts();
+                updateCompactions();
+                updateModelBreakdown();
 
-            // Update timestamp
-            document.getElementById('updateTime').textContent = new Date(data.updated_at).toLocaleTimeString();
+                // Load activity data
+                try {
+                    const activityResponse = await fetch('activity.json');
+                    dashboardData.activity = await activityResponse.json();
+                    updateActivityFeed();
+                } catch (e) {
+                    console.log('Activity data not available');
+                    document.getElementById('activityList').innerHTML = '<div class="loading">No activities yet</div>';
+                }
 
-            // Load models
-            if (data.model_breakdown && data.model_breakdown.length > 0) {
-                loadModels(data.model_breakdown);
-                drawPieChart(data.model_breakdown);
+                // Load tasks data
+                try {
+                    const tasksResponse = await fetch('tasks.json');
+                    dashboardData.tasks = await tasksResponse.json();
+                    updateTasks();
+                } catch (e) {
+                    console.log('Tasks data not available');
+                    document.getElementById('taskList').innerHTML = '<div class="loading">No tasks yet</div>';
+                }
+
+                // Initialize calendar
+                updateCalendar();
+
+            } catch (error) {
+                console.error('Error loading data:', error);
             }
-        } catch (e) {
-            console.error('Load failed:', e);
         }
-    }
 
-    function loadModels(models) {
-        const container = document.getElementById('modelCards');
-        const emojis = { 'claude-sonnet': '🎭', 'claude-opus': '👑', 'claude-haiku': '✨', 'grok': '🚀', 'gemini': '💎', 'gpt-4o': '🤖', 'dall-e': '🎨' };
-        
-        container.innerHTML = models.map(m => `
-            <div class="model-card">
-                <div class="model-emoji">${emojis[m.model] || '❓'}</div>
-                <div class="model-name">${m.display_name}</div>
-                <div class="model-tokens">${(m.total_tokens / 1000).toFixed(0)}k tokens</div>
-                <div class="model-cost">$${m.costs.monthly.toFixed(2)}/mo</div>
-            </div>
-        `).join('');
-    }
+        // Update Context Gauge
+        function updateContextGauge() {
+            if (!dashboardData.usage || !dashboardData.usage.context) return;
 
-    function drawPieChart(models) {
-        const canvas = document.getElementById('pieChart');
-        const ctx = canvas.getContext('2d');
-        const total = models.reduce((s, m) => s + m.total_tokens, 0);
-        const colors = ['#7c3aed', '#ec4899', '#06b6d4', '#f59e0b', '#3b82f6', '#10b981', '#ef4444'];
-        
-        let angle = 0;
-        models.forEach((m, i) => {
-            const sliceAngle = (m.total_tokens / total) * Math.PI * 2;
-            ctx.fillStyle = colors[i] || '#999';
-            ctx.beginPath();
-            ctx.arc(100, 100, 80, angle, angle + sliceAngle);
-            ctx.lineTo(100, 100);
-            ctx.fill();
-            angle += sliceAngle;
+            const context = dashboardData.usage.context;
+            const percentage = context.percentage || 0;
+            const tokensDisplay = context.tokens_display || `${context.used_tokens}/${context.max_tokens}`;
+
+            const gaugeElement = document.getElementById('contextGauge');
+            const gaugeValue = document.getElementById('gaugeValue');
+            const gaugeLabel = document.getElementById('gaugeLabel');
+
+            gaugeElement.style.setProperty('--percentage', percentage);
+            gaugeValue.textContent = `${percentage}%`;
+            gaugeLabel.textContent = tokensDisplay;
+        }
+
+        // Update Costs
+        function updateCosts() {
+            if (!dashboardData.usage || !dashboardData.usage.costs) return;
+
+            const costs = dashboardData.usage.costs;
+            document.getElementById('costDaily').textContent = `$${costs.daily.toFixed(2)}`;
+            document.getElementById('costWeekly').textContent = `$${costs.weekly.toFixed(2)}`;
+            document.getElementById('costMonthly').textContent = `$${costs.monthly.toFixed(2)}`;
+        }
+
+        // Update Compactions
+        function updateCompactions() {
+            if (!dashboardData.usage || !dashboardData.usage.compaction) return;
+
+            const compaction = dashboardData.usage.compaction;
+            document.getElementById('compactionCount').textContent = compaction.count || 0;
+            
+            const lastDate = compaction.last_date || 'Never';
+            document.getElementById('compactionDate').textContent = `Last: ${lastDate}`;
+        }
+
+        // Update Model Breakdown with cards and pie chart
+        function updateModelBreakdown() {
+            if (!dashboardData.usage) return;
+
+            const modelBreakdown = dashboardData.usage.model_breakdown || [];
+            const modelGrid = document.getElementById('modelGrid');
+            modelGrid.innerHTML = '';
+
+            // Create a map of existing model data
+            const modelDataMap = {};
+            modelBreakdown.forEach(model => {
+                const key = model.model.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+                modelDataMap[key] = model;
+            });
+
+            // Create cards for all 7 models
+            const chartData = [];
+            MODEL_DEFINITIONS.forEach(modelDef => {
+                const modelData = modelDataMap[modelDef.key] || {
+                    model: modelDef.key,
+                    display_name: modelDef.displayName,
+                    total_tokens: 0,
+                    session_count: 0,
+                    costs: { daily: 0, weekly: 0, monthly: 0 }
+                };
+
+                const isActive = modelData.total_tokens > 0;
+                const card = document.createElement('div');
+                card.className = `model-card ${isActive ? 'active' : ''}`;
+
+                const totalTokensK = (modelData.total_tokens / 1000).toFixed(1);
+                
+                card.innerHTML = `
+                    <div class="model-name">${modelData.display_name}</div>
+                    <div class="model-stats">
+                        <div class="model-stat">
+                            <div class="model-stat-value">${totalTokensK}k</div>
+                            <div class="model-stat-label">Total Tokens</div>
+                        </div>
+                        <div class="model-stat">
+                            <div class="model-stat-value">${modelData.session_count}</div>
+                            <div class="model-stat-label">Sessions</div>
+                        </div>
+                    </div>
+                    <div class="model-cost">
+                        <strong>$${modelData.costs.monthly.toFixed(2)}</strong>/mo
+                    </div>
+                `;
+
+                modelGrid.appendChild(card);
+
+                // Add to chart data if active
+                if (isActive) {
+                    chartData.push({
+                        label: modelData.display_name,
+                        value: modelData.total_tokens,
+                        color: modelDef.color
+                    });
+                }
+            });
+
+            // Create pie chart
+            createPieChart(chartData);
+        }
+
+        // Create Pie Chart
+        function createPieChart(data) {
+            const canvas = document.getElementById('modelPieChart');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = 300;
+            canvas.height = 300;
+
+            if (data.length === 0) {
+                ctx.fillStyle = '#999';
+                ctx.font = '16px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('No data yet', canvas.width / 2, canvas.height / 2);
+                return;
+            }
+
+            const total = data.reduce((sum, item) => sum + item.value, 0);
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 100;
+
+            let currentAngle = -Math.PI / 2; // Start at top
+
+            data.forEach(item => {
+                const sliceAngle = (item.value / total) * 2 * Math.PI;
+
+                // Draw slice
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+                ctx.closePath();
+                ctx.fillStyle = item.color;
+                ctx.fill();
+
+                // Draw label
+                const labelAngle = currentAngle + sliceAngle / 2;
+                const labelX = centerX + Math.cos(labelAngle) * (radius * 0.7);
+                const labelY = centerY + Math.sin(labelAngle) * (radius * 0.7);
+                
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 12px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                const percentage = ((item.value / total) * 100).toFixed(1);
+                if (parseFloat(percentage) > 5) { // Only show label if slice is > 5%
+                    ctx.fillText(`${percentage}%`, labelX, labelY);
+                }
+
+                currentAngle += sliceAngle;
+            });
+
+            // Draw legend
+            let legendY = canvas.height - 40;
+            const legendX = 10;
+            
+            data.forEach(item => {
+                ctx.fillStyle = item.color;
+                ctx.fillRect(legendX, legendY, 15, 15);
+                
+                ctx.fillStyle = '#333';
+                ctx.font = '12px sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText(item.label, legendX + 20, legendY + 12);
+                
+                legendY += 20;
+            });
+        }
+
+        // Update Activity Feed
+        function updateActivityFeed() {
+            const activityList = document.getElementById('activityList');
+            
+            if (!dashboardData.activity || !dashboardData.activity.activities) {
+                activityList.innerHTML = '<div class="loading">No activities yet</div>';
+                return;
+            }
+
+            const activities = dashboardData.activity.activities.slice(0, 10); // Last 10
+            
+            activityList.innerHTML = activities.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-time">${formatTime(activity.timestamp)}</div>
+                    <div>${activity.action || activity.description}</div>
+                </div>
+            `).join('');
+        }
+
+        // Update Tasks
+        function updateTasks() {
+            const taskList = document.getElementById('taskList');
+            
+            if (!dashboardData.tasks || !dashboardData.tasks.tasks) {
+                taskList.innerHTML = '<div class="loading">No tasks yet</div>';
+                return;
+            }
+
+            const tasks = dashboardData.tasks.tasks;
+            
+            taskList.innerHTML = tasks.map((task, index) => `
+                <div class="task-item ${task.completed ? 'completed' : ''}">
+                    <input type="checkbox" class="task-checkbox" 
+                           ${task.completed ? 'checked' : ''} 
+                           onchange="toggleTask(${index})">
+                    <span>${task.title || task.description}</span>
+                </div>
+            `).join('');
+        }
+
+        // Toggle Task
+        function toggleTask(index) {
+            if (dashboardData.tasks && dashboardData.tasks.tasks[index]) {
+                dashboardData.tasks.tasks[index].completed = !dashboardData.tasks.tasks[index].completed;
+                updateTasks();
+                // In production, you'd save this back to the server
+            }
+        }
+
+        // Update Calendar
+        function updateCalendar() {
+            const calendarGrid = document.getElementById('calendarGrid');
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            
+            // Days of week header
+            const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            daysOfWeek.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-day calendar-header';
+                dayHeader.textContent = day;
+                calendarGrid.appendChild(dayHeader);
+            });
+
+            // Get first day of month and number of days
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            // Add empty cells for days before month starts
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day';
+                calendarGrid.appendChild(emptyDay);
+            }
+
+            // Add days of month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayCell = document.createElement('div');
+                dayCell.className = 'calendar-day';
+                dayCell.textContent = day;
+                
+                // Highlight today
+                if (day === today.getDate()) {
+                    dayCell.classList.add('today');
+                }
+
+                calendarGrid.appendChild(dayCell);
+            }
+        }
+
+        // Format timestamp
+        function formatTime(timestamp) {
+            if (!timestamp) return 'Unknown';
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins}m ago`;
+            if (diffHours < 24) return `${diffHours}h ago`;
+            if (diffDays < 7) return `${diffDays}d ago`;
+            
+            return date.toLocaleDateString();
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            // Implement search filtering across all sections
+            console.log('Searching for:', searchTerm);
+            // This would filter visible content in production
         });
 
-        let legend = models.map((m, i) => `<div style="margin: 4px 0;"><span style="display: inline-block; width: 12px; height: 12px; background: ${colors[i]}; margin-right: 6px;"></span>${m.display_name}</div>`).join('');
-        document.getElementById('pieLegend').innerHTML = legend;
-    }
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            loadAllData();
+        }, 30000);
 
-    loadDashboard();
-    setInterval(loadDashboard, 300000); // Update every 5 min
-</script>
+        // Initial load
+        loadAllData();
+    </script>
 </body>
 </html>
