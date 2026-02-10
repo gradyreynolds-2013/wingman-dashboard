@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wingman Mission Control</title>
+    <title>Wingman Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -682,6 +682,182 @@
                 justify-content: space-between;
             }
         }
+
+        /* Usage Meter & Cost Tracker */
+        .usage-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+
+        .usage-gauge-card {
+            background: var(--card-bg);
+            border: 1.5px solid var(--card-border);
+            padding: 32px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gauge-container {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin-bottom: 20px;
+        }
+
+        .gauge-svg {
+            transform: rotate(-90deg);
+        }
+
+        .gauge-bg {
+            fill: none;
+            stroke: rgba(0, 212, 255, 0.1);
+            stroke-width: 12;
+        }
+
+        .gauge-fill {
+            fill: none;
+            stroke: url(#gaugeGradient);
+            stroke-width: 12;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s ease-in-out;
+        }
+
+        .gauge-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .gauge-percentage {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .gauge-label {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        .gauge-tokens {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        .gauge-model {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+            padding: 4px 12px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 6px;
+        }
+
+        .costs-card {
+            background: var(--card-bg);
+            border: 1.5px solid var(--card-border);
+            padding: 32px;
+            border-radius: 12px;
+        }
+
+        .costs-header {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-left: 4px solid;
+            border-image: linear-gradient(180deg, var(--primary), var(--primary-dark)) 1;
+            padding-left: 16px;
+        }
+
+        .costs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .cost-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 212, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .cost-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .cost-value {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .cost-label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .compaction-info {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(0, 212, 255, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .compaction-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .compaction-count {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        @media (max-width: 900px) {
+            .usage-container {
+                grid-template-columns: 1fr;
+            }
+
+            .costs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -689,7 +865,7 @@
         <header>
             <div class="logo">
                 <span class="logo-emoji">🐦‍🔥</span>
-                <span>Mission Control</span>
+                <span>Wingman</span>
             </div>
             <div>
                 <div class="last-updated">
@@ -711,6 +887,53 @@
                 onblur="this.style.borderColor='rgba(0, 212, 255, 0.15)'"
             >
             <div id="searchResults" style="margin-top: 16px; display: none;"></div>
+        </div>
+
+        <!-- Usage & Cost Tracker -->
+        <div class="usage-container">
+            <div class="usage-gauge-card">
+                <div class="gauge-container">
+                    <svg class="gauge-svg" width="180" height="180">
+                        <defs>
+                            <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#0099cc;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle class="gauge-bg" cx="90" cy="90" r="80"></circle>
+                        <circle id="gaugeFill" class="gauge-fill" cx="90" cy="90" r="80" 
+                                stroke-dasharray="502.65" stroke-dashoffset="502.65"></circle>
+                    </svg>
+                    <div class="gauge-text">
+                        <div class="gauge-percentage" id="contextPercentage">--</div>
+                        <div class="gauge-label">Context</div>
+                    </div>
+                </div>
+                <div class="gauge-tokens" id="tokensDisplay">-- / --</div>
+                <div class="gauge-model" id="modelDisplay">--</div>
+            </div>
+
+            <div class="costs-card">
+                <div class="costs-header">Estimated Costs</div>
+                <div class="costs-grid">
+                    <div class="cost-item">
+                        <div class="cost-value" id="costDaily">$--</div>
+                        <div class="cost-label">Daily</div>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-value" id="costWeekly">$--</div>
+                        <div class="cost-label">Weekly</div>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-value" id="costMonthly">$--</div>
+                        <div class="cost-label">Monthly</div>
+                    </div>
+                </div>
+                <div class="compaction-info">
+                    <span class="compaction-label">Compactions</span>
+                    <span class="compaction-count" id="compactionCount">--</span>
+                </div>
+            </div>
         </div>
 
         <!-- Activity Feed -->
@@ -786,6 +1009,35 @@
     </div>
 
     <script>
+        async function loadUsage() {
+            try {
+                const response = await fetch('./usage.json');
+                const data = await response.json();
+
+                // Update context gauge
+                const percentage = data.context.percentage;
+                document.getElementById('contextPercentage').textContent = percentage + '%';
+                document.getElementById('tokensDisplay').textContent = data.context.tokens_display;
+                document.getElementById('modelDisplay').textContent = data.model.replace(/-/g, ' ').toUpperCase();
+
+                // Animate gauge
+                const circumference = 2 * Math.PI * 80; // radius = 80
+                const offset = circumference - (percentage / 100) * circumference;
+                document.getElementById('gaugeFill').style.strokeDashoffset = offset;
+
+                // Update costs
+                document.getElementById('costDaily').textContent = '$' + data.costs.daily;
+                document.getElementById('costWeekly').textContent = '$' + data.costs.weekly;
+                document.getElementById('costMonthly').textContent = '$' + data.costs.monthly;
+
+                // Update compaction count
+                document.getElementById('compactionCount').textContent = data.compaction.count;
+
+            } catch (error) {
+                console.error('Error loading usage:', error);
+            }
+        }
+
         async function loadDashboard() {
             try {
                 const response = await fetch('./activity.json');
@@ -805,6 +1057,7 @@
                 loadLinks();
                 loadActivityFeed();
                 loadCalendar();
+                loadUsage();
 
             } catch (error) {
                 console.error('Error loading dashboard:', error);
@@ -1139,187 +1392,3 @@
     </script>
 </body>
 </html>
-<!-- Test deploy: Mon Feb  9 20:07:35 UTC 2026 -->
-
-<script>
-// Add interactive features without breaking existing code
-
-// Task sorting
-let currentSort = 'dueDate';
-
-function sortTasks(sortBy) {
-    currentSort = sortBy;
-    const tasks = window.tasksData || [];
-    let sorted = [...tasks];
-    
-    if (sortBy === 'dueDate') {
-        sorted.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
-    } else if (sortBy === 'priority') {
-        const pOrder = { high: 0, medium: 1, low: 2 };
-        sorted.sort((a, b) => (pOrder[a.priority] || 999) - (pOrder[b.priority] || 999));
-    } else if (sortBy === 'status') {
-        const sOrder = { pending: 0, 'in-progress': 1, completed: 2 };
-        sorted.sort((a, b) => (sOrder[a.status] || 999) - (sOrder[b.status] || 999));
-    } else if (sortBy === 'name') {
-        sorted.sort((a, b) => a.title.localeCompare(b.title));
-    }
-    
-    renderTasks(sorted);
-}
-
-function renderTasks(tasks) {
-    const html = tasks.map(task => {
-        const dueDate = new Date(task.dueDate);
-        const today = new Date();
-        const daysUntil = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
-        const dueText = daysUntil === 0 ? 'Due today' : daysUntil === 1 ? 'Due tomorrow' : `Due in ${daysUntil} days`;
-        
-        return `
-            <div class="task-item ${task.priority}-priority">
-                <div class="task-content">
-                    <div class="task-title">${task.title}</div>
-                    <div class="task-description">${task.description}</div>
-                    <div class="task-meta"><span>${dueText}</span></div>
-                </div>
-                <span class="task-status">${task.status}</span>
-            </div>
-        `;
-    }).join('');
-    
-    const sortButtons = `
-        <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
-            <button onclick="sortTasks('dueDate')" style="padding: 6px 12px; background: ${currentSort === 'dueDate' ? '#00d4ff' : 'rgba(0,212,255,0.2)'}; color: #000; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">📅 Due</button>
-            <button onclick="sortTasks('priority')" style="padding: 6px 12px; background: ${currentSort === 'priority' ? '#00d4ff' : 'rgba(0,212,255,0.2)'}; color: #000; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">🎯 Priority</button>
-            <button onclick="sortTasks('status')" style="padding: 6px 12px; background: ${currentSort === 'status' ? '#00d4ff' : 'rgba(0,212,255,0.2)'}; color: #000; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">✓ Status</button>
-            <button onclick="sortTasks('name')" style="padding: 6px 12px; background: ${currentSort === 'name' ? '#00d4ff' : 'rgba(0,212,255,0.2)'}; color: #000; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">A-Z</button>
-        </div>
-    `;
-    
-    document.getElementById('tasksSection').innerHTML = sortButtons + `<div class="task-list">${html}</div>`;
-}
-
-// After page loads, enhance loadTasks to include sort buttons
-window.addEventListener('load', function() {
-    // Store original loadTasks
-    const origLoad = window.loadTasks;
-    window.loadTasks = async function() {
-        await origLoad.call(this);
-        // Re-render with sort buttons
-        if (window.tasksData) {
-            renderTasks(window.tasksData);
-        }
-    };
-});
-</script>
-
-<script>
-// Add clear completed button
-function clearCompleted() {
-    if (window.tasksData) {
-        window.tasksData = window.tasksData.filter(task => task.status !== 'completed');
-        renderTasks(window.tasksData);
-    }
-}
-
-// Enhance renderTasks to include clear button
-const origRenderTasks = window.renderTasks || function() {};
-window.renderTasks = function(tasks) {
-    const sortButtons = `
-        <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; align-items: center;">
-            <button onclick="sortTasks('dueDate')" style="padding: 6px 12px; background: ${window.currentSort === 'dueDate' ? '#00d4ff' : 'rgba(0,212,255,0.2)'}; color: #000; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">📅 Due</button>
-            <button onclick="sortTasks('priority')" style="padding: 6px 12px; background: ${window.currentSort === 'priority' ? '#00d4ff' : 'rgba(0,212,255,0.2)'}; color: #000; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">🎯 Priority</button>
-            <button onclick="sortTasks('status')" style="padding: 6px 12px; background: ${window.currentSort === 'status' ? '#00d4ff' : 'rgba(0,212,255,0.2)'}; color: #000; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">✓ Status</button>
-            <button onclick="sortTasks('name')" style="padding: 6px 12px; background: ${window.currentSort === 'name' ? '#00d4ff' : 'rgba(0,212,255,0.2)'}; color: #000; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">A-Z</button>
-            <div style="flex: 1;"></div>
-            <button onclick="clearCompleted()" style="padding: 6px 12px; background: 'rgba(255, 107, 107, 0.3)'; color: #ff6b6b; border: 1px solid #ff6b6b; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">🗑️ Clear Completed</button>
-        </div>
-    `;
-    
-    const html = tasks.map(task => {
-        const dueDate = new Date(task.dueDate);
-        const today = new Date();
-        const daysUntil = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
-        const dueText = daysUntil === 0 ? 'Due today' : daysUntil === 1 ? 'Due tomorrow' : `Due in ${daysUntil} days`;
-        
-        return `
-            <div class="task-item ${task.priority}-priority">
-                <div class="task-content">
-                    <div class="task-title">${task.title}</div>
-                    <div class="task-description">${task.description}</div>
-                    <div class="task-meta"><span>${dueText}</span></div>
-                </div>
-                <span class="task-status">${task.status}</span>
-            </div>
-        `;
-    }).join('');
-    
-    document.getElementById('tasksSection').innerHTML = sortButtons + `<div class="task-list">${html}</div>`;
-};
-</script>
-
-<!-- File Preview Modal -->
-<div id="fileModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; flex-direction: column;">
-    <div style="background: var(--card-bg); border: 1px solid var(--primary); border-radius: 12px; padding: 24px; max-width: 600px; width: 90%; color: var(--text-primary);">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
-            <div id="modalTitle" style="font-weight: 700; font-size: 16px;">File Details</div>
-            <button onclick="closeFileModal()" style="background: none; border: none; color: var(--primary); font-size: 24px; cursor: pointer; font-weight: 700;">✕</button>
-        </div>
-        <div style="margin-bottom: 16px; color: var(--text-secondary); font-size: 13px;">
-            <div style="margin-bottom: 6px;"><strong>Well:</strong> <span id="modalWell">-</span></div>
-            <div style="margin-bottom: 6px;"><strong>Type:</strong> <span id="modalType">-</span></div>
-            <div style="margin-bottom: 6px;"><strong>Date:</strong> <span id="modalDate">-</span></div>
-            <div><strong>Size:</strong> <span id="modalSize">-</span></div>
-        </div>
-        <div style="display: flex; gap: 8px;">
-            <button onclick="openInGoogleDrive()" style="flex: 1; padding: 10px; background: var(--primary); color: #000; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 13px;">🔗 Open in Google Drive</button>
-            <button onclick="closeFileModal()" style="flex: 1; padding: 10px; background: rgba(0,212,255,0.2); color: var(--text-primary); border: none; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 13px;">Close</button>
-        </div>
-    </div>
-</div>
-
-<script>
-let currentFile = null;
-
-function openFile(filename, type, well, date, size) {
-    currentFile = { filename, type, well, date, size };
-    document.getElementById('modalTitle').textContent = filename;
-    document.getElementById('modalWell').textContent = well;
-    document.getElementById('modalType').textContent = type;
-    document.getElementById('modalDate').textContent = date;
-    document.getElementById('modalSize').textContent = size;
-    document.getElementById('fileModal').style.display = 'flex';
-}
-
-function closeFileModal() {
-    document.getElementById('fileModal').style.display = 'none';
-}
-
-function openInGoogleDrive() {
-    if (currentFile) {
-        window.open(`https://drive.google.com/drive/search?q=${encodeURIComponent(currentFile.filename)}`, '_blank');
-    }
-}
-
-// Enhance loadWells to add click handlers
-const originalLoadWells = window.loadWells;
-window.loadWells = async function() {
-    await originalLoadWells.call(this);
-    
-    // Add click handlers to document names after they load
-    setTimeout(() => {
-        const wellsDocs = document.querySelectorAll('.document-name');
-        wellsDocs.forEach(doc => {
-            doc.style.cursor = 'pointer';
-            doc.style.color = 'var(--primary)';
-            doc.addEventListener('click', function() {
-                const filename = this.textContent.trim();
-                const type = this.getAttribute('data-type') || 'Document';
-                const well = this.getAttribute('data-well') || '-';
-                const date = this.getAttribute('data-date') || '-';
-                const size = this.getAttribute('data-size') || '-';
-                openFile(filename, type, well, date, size);
-            });
-        });
-    }, 100);
-};
-</script>
